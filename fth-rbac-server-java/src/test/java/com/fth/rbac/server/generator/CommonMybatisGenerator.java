@@ -2,7 +2,14 @@ package com.fth.rbac.server.generator;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.api.ShellCallback;
-import org.mybatis.generator.config.*;
+import org.mybatis.generator.config.Configuration;
+import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.JDBCConnectionConfiguration;
+import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
+import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
+import org.mybatis.generator.config.ModelType;
+import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
+import org.mybatis.generator.config.TableConfiguration;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.internal.DefaultShellCallback;
 import org.slf4j.Logger;
@@ -15,9 +22,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -52,7 +57,10 @@ public class CommonMybatisGenerator {
         boolean createInterfaces = true;
 
         // 需要生成的表
-        String[] tableNames = {""};
+        String[] tableNames = {
+                "fr_app_application", "ft_app_log", "fr_app_resource", "fr_app_role", "fr_app_role_resource",
+                "fr_sys_user"
+        };
 
         generate(dbUrl + dbName, dbName, user, pass, projectSrc, parentProjectName, projectName,
                 packageName, createInterfaces, jdbcJarPath, tableNames);

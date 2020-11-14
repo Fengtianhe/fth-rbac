@@ -1,0 +1,36 @@
+[
+  {
+    "name": "主页",
+    "path": "/"
+  },
+  {
+    "name": "应用管理",
+    "children": [
+      {
+        "name": "应用列表",
+        "path": "/application/app/list"
+      },
+      {
+        "name": "应用资源",
+        "path": "/application/resource/list"
+      },
+      {
+        "name": "应用角色",
+        "path": "/application/role/list"
+      }
+    ]
+  },
+  {
+    "name": "报表管理",
+    "path": "/monitor/index"
+  },
+  {
+    "name": "系统管理",
+    "children": [
+      {
+        "name": "用户管理",
+        "path": "/system/user/list"
+      }
+    ]
+  }
+]

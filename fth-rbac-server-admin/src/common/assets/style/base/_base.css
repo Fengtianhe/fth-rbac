@@ -1,0 +1,238 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+}
+
+#app,
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.right,
+.r {
+    float: right !important;
+}
+
+.left,
+.l {
+    float: left;
+}
+
+.align-right {
+    text-align: right !important;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+.clearfix:after {
+    content: '\0020';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden
+}
+
+.clear,
+.clear:before,
+.clear:after {
+    clear: both;
+
+}
+
+.el-pagination {
+    text-align: left;
+    padding: 10px;
+}
+
+.hide {
+    display: none !important;
+}
+
+/*font-size*/
+.font10 {
+    font-size: 12px;
+}
+
+.font12 {
+    font-size: 12px;
+}
+
+.font13 {
+    font-size: 13px;
+}
+
+.font14 {
+    font-size: 14px;
+}
+
+.font15 {
+    font-size: 15px;
+}
+
+.font16 {
+    font-size: 16px;
+}
+
+.font18 {
+    font-size: 18px;
+}
+
+.font19 {
+    font-size: 19px;
+}
+
+.font20 {
+    font-size: 20px;
+}
+
+.font22 {
+    font-size: 22px;
+}
+
+.font24 {
+    font-size: 24px;
+}
+
+.font26 {
+    font-size: 26px;
+}
+
+.font28 {
+    font-size: 28px;
+}
+
+.font30 {
+    font-size: 30px;
+}
+
+.font32 {
+    font-size: 32px;
+}
+
+.font36 {
+    font-size: 36px;
+}
+
+.font48 {
+    font-size: 48px;
+}
+
+.font60 {
+    font-size: 60px;
+}
+
+.flex-grid {
+    display: flex;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-justify-around {
+    justify-content: space-around;
+}
+
+.flex-justify-between {
+    justify-content: space-between;
+}
+
+.flex-justify-start {
+    justify-content: flex-start;
+}
+
+.flex-justify-end {
+    justify-content: flex-end;
+}
+
+.flex-justify-center {
+    justify-content: center;
+}
+
+.flex-align-center {
+    align-items: center;
+}
+
+.flex-align-end {
+    align-items: flex-end;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.success-color,
+.success-font-color {
+    color: mediumseagreen;
+}
+
+.error-color,
+.error-font-color {
+    color: #FF5722;
+}
+
+.ifram-page-wrap {
+    position: fixed;
+    background: #ffffff;
+    left: 185px;
+    right: 0px;
+    bottom: 35px;
+    top: 50px;
+}
+
+.ifram-page-wrap iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/*滚动条样式*/
+::-webkit-scrollbar {
+    /* width: 5px;
+    height: 5px; */
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 1em;
+    background-color: rgba(50, 50, 50, .3);
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 1em;
+    background-color: rgba(50, 50, 50, .1);
+}
+
+.table-container__pagination {
+    border-top: 1px solid #EBEEF5
+}
+
+.table-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    /* padding: 5px 0; */
+    flex: 0 0 40px;
+}

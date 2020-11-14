@@ -1,0 +1,22 @@
+<template>
+  <div id="app">
+    <router-view/>
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'App',
+  components: {}
+};
+</script>
+
+<style lang="less">
+  @import "../common/assets/style/base/_base.css";
+
+  * {
+    padding: 0;
+    margin: 0;
+  }
+</style>

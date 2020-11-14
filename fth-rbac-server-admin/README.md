@@ -1,4 +1,4 @@
-# fth-rbac-server-admin
+# cmn-rbac-admin
 
 ## Project setup
 ```
