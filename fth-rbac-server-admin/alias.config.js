@@ -17,7 +17,7 @@ module.exports = {
       '@': resolve('src'),
       '@common': resolve('src/common'),
       '@c': resolve('src/common/components'),
-      '@u': resolve('src/common/utils/index.js'),
+      '@utils': resolve('src/common/utils/index.js'),
       '@m': resolve('src/common/mapping/index.js'),
       '@web': resolve('src/web')
     }

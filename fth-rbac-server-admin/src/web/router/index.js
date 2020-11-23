@@ -16,18 +16,18 @@ const routes = [
     component: Layout,
     redirect: '/dashboard/index',
     children: [
-      {path: '/dashboard/index', name: "主页", component: () => import('@web/views/dashboard')},
+      { path: '/dashboard/index', name: '主页', component: () => import('@web/views/dashboard') },
     ]
   },
   {
     path: '/application',
     component: Layout,
-    name: "应用管理",
+    name: '应用管理',
     redirect: '/application/app/list',
     children: [
-      {path: 'app/list', name: "应用列表", component: () => import('@web/views/dashboard')},
-      {path: 'resource/list', name: "应用资源", component: () => import('@web/views/dashboard')},
-      {path: 'role/list', name: "应用角色", component: () => import('@web/views/dashboard')},
+      { path: 'app/list', name: '应用列表', component: () => import('@web/views/app/application/list') },
+      { path: 'resource/list', name: '应用资源', component: () => import('@web/views/dashboard') },
+      { path: 'role/list', name: '应用角色', component: () => import('@web/views/dashboard') },
     ]
   },
   {
@@ -36,7 +36,7 @@ const routes = [
     name: '系统管理',
     redirect: '/application/user/list',
     children: [
-      {path: 'user/list', name: "用户管理", component: () => import('@web/views/dashboard')},
+      { path: 'user/list', name: '用户管理', component: () => import('@web/views/dashboard') },
     ]
   },
   { path: '*', redirect: '/404' }

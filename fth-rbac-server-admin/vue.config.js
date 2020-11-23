@@ -25,11 +25,11 @@ module.exports = {
     // }
   },
   devServer: {
-    port: 9001,
+    port: 3000,
     proxy: {
       // proxy all requests starting with /api to jsonplaceholder
       '/': {
-        target: 'http://192.168.43.89:30001', //代理接口
+        target: 'http://127.0.0.1:8080', //代理接口
         secure: false,
         changeOrigin: true,
         pathRewrite: {
@@ -66,7 +66,7 @@ module.exports = {
       .set('@', resolve('src'))
       .set('@common', resolve('src/common'))
       .set('@c', resolve('src/common/components'))
-      .set('@u', resolve('src/common/utils/index.js'))
+      .set('@utils', resolve('src/common/utils/index.js'))
       .set('@m', resolve('src/common/mapping/index.js'))
       .set('@web', resolve('src/web'));
 

@@ -4,13 +4,13 @@
     <div class="main-container">
       <navbar></navbar>
       <tags-view></tags-view>
-      <app-main></app-main>
+      <app-main style="flex: 1"></app-main>
     </div>
   </div>
 </template>
 
 <script>
-  import {Navbar, Sidebar, AppMain, TagsView} from './components'
+import { Navbar, Sidebar, AppMain, TagsView } from './components';
 
 export default {
   name: 'layout',
@@ -20,10 +20,8 @@ export default {
     AppMain,
     TagsView
   },
-  computed: {
-  },
-  methods: {
-  }
+  computed: {},
+  methods: {}
 };
 </script>
 
@@ -41,6 +39,8 @@ export default {
 
     .main-container {
       flex: 1;
+      display: flex;
+      flex-direction: column;
     }
   }
 </style>

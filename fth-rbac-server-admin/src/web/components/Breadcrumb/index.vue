@@ -2,9 +2,11 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <span class="breadcrumb-label">当前位置：</span>
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index)  in levelList" :key="index" v-if="item.name">
-        <span v-if="index == levelList.length - 1" class="no-redirect">{{item.name}}</span>
-        <router-link v-else :to="item.redirect || item.path">{{item.name}}</router-link>
+      <el-breadcrumb-item v-for="(item,index) in levelList" :key="index">
+        <template v-if="item.name">
+          <span v-if="index == levelList.length - 1" class="no-redirect">{{item.name}}</span>
+          <router-link v-else :to="item.redirect || item.path">{{item.name}}</router-link>
+        </template>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -28,7 +30,7 @@ export default {
   methods: {
     getBreadcrumb() {
       let matched = this.$route.matched.filter(item => item.name);
-      console.log(matched)
+      // console.log(matched)
       this.levelList = matched;
     }
   }
