@@ -14,9 +14,4 @@ export default {
 
 <style lang="less">
   @import "../common/assets/style/base/_base.css";
-
-  * {
-    padding: 0;
-    margin: 0;
-  }
 </style>

@@ -2,8 +2,13 @@
   <div class="table-container">
     <div class="table">
       <el-table stripe>
-        <div v-if="columns.length >0"></div>
-        <slot v-else name="column"></slot>
+        <el-table-column
+            v-for="col in columns"
+            :key="`${col.label}-${col.prop}`"
+            :label="col.label"
+            :prop="col.prop"
+        ></el-table-column>
+        <slot name="column"></slot>
       </el-table>
     </div>
 
