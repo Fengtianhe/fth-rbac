@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created on 2020/11/14 2:09 下午.
  *
@@ -29,6 +31,13 @@ public class AppApplicationController {
     @GetMapping("/list")
     public CommonResponse<PaginationResponse<FrAppApplication>> list(@ModelAttribute PaginationRequest request) {
         PaginationResponse<FrAppApplication> pageResponse = appApplicationService.selectWithPagination(request);
+        return CommonResponse.withSuccessResp(pageResponse);
+    }
+
+    @ApiOperation("应用列表")
+    @GetMapping("/all")
+    public CommonResponse<List<FrAppApplication>> all() {
+        List<FrAppApplication> pageResponse = appApplicationService.selectAll();
         return CommonResponse.withSuccessResp(pageResponse);
     }
 }

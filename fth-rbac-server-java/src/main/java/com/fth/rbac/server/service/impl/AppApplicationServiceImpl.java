@@ -11,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,5 +30,10 @@ public class AppApplicationServiceImpl implements AppApplicationService {
         FrAppApplicationExample example = new FrAppApplicationExample();
         List<FrAppApplication> frAppApplications = frAppApplicationMapper.selectByExample(example);
         return new PaginationResponse<>(frAppApplications, page);
+    }
+
+    @Override
+    public List<FrAppApplication> selectAll() {
+        return new ArrayList<>();
     }
 }
