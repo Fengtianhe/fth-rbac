@@ -7,7 +7,7 @@
       </el-tooltip>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-<!--          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">-->
+          <!--          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">-->
           <div class="username-avatar">{{user.username | substr(1)}}</div>
           <i class="el-icon-caret-bottom"></i>
         </div>
@@ -196,8 +196,21 @@ export default {
 
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 5px;
+        height: 100%;
+        display: flex;
+        align-items: center;
         position: relative;
+
+        .username-avatar {
+          background: #304156;
+          color: #fff;
+          text-transform: uppercase;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          text-align: center;
+          line-height: 30px;
+        }
 
         .user-avatar {
           width: 40px;
