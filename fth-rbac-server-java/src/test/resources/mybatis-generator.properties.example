@@ -3,14 +3,14 @@
 
 
 # 这里填写自己系统jar包的地址
-mybatis.generator.jdbc-jar-path: .m2/repository/mysql/mysql-connector-java/5.1.42/mysql-connector-java-5.1.42.jar
+mybatis.generator.jdbc-jar-path=.m2/repository/mysql/mysql-connector-java/5.1.42/mysql-connector-java-5.1.42.jar
 # 数据库IP：PORT 不用多说
-mybatis.generator.db-url: jdbc:MYSQL://47.104.165.231:3306/
+mybatis.generator.db-url=jdbc:MYSQL://47.104.165.231:3306/
 # 数据库名
-mybatis.generator.db-name: 111
+mybatis.generator.db-name=111
 # 数据库连接用户名
-mybatis.generator.db-username: eeeeeeee
+mybatis.generator.db-username=eeeeeeee
 # 数据库连接密码
-mybatis.generator.db-password: 333
+mybatis.generator.db-password=333
 # 当前项目所在的目录 例如项目的路径是 /opt/project/fth-rbac/fth-rbac-server-java 那么 project-src 的值就是 /opt/project/fth-rbac
-mybatis.generator.project-src: 444
+mybatis.generator.project-src=444

@@ -43,6 +43,13 @@ public class CommonResponse<T> implements Serializable {
         return cr;
     }
 
+    public static <T> CommonResponse<T> withResp(int code, String msg) {
+        CommonResponse<T> cr = new CommonResponse<>();
+        cr.setCode(code);
+        cr.setMessage(msg);
+        return cr;
+    }
+
     public static <T> CommonResponse<T> withResp(int code, String msg, T data) {
         CommonResponse<T> cr = new CommonResponse<>();
         cr.setCode(code);

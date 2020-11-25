@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
+import store from '@web/store';
 
 let api = '';
 let method = '';
@@ -16,6 +17,7 @@ service.interceptors.request.use(
   config => {
     api = config.url;
     method = config.method;
+    config.headers['X-Authorization-Token'] = store.state.user.token;
     return config;
   },
   error => {
@@ -27,11 +29,13 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(response => {
     const res = response.data;
+    console.log(res);
     if (res.code === 200 || res.code === 0) {
-      return response.data;
+      return res;
     }
-    if (res.code === 50003) {
+    if (res.code === 401) {
       Message.error('请重新登录');
+      window.$router.push({ path: 'login' });
       return;
     }
     if (res.code === 404) {
@@ -39,14 +43,21 @@ service.interceptors.response.use(response => {
       return;
     }
     Message({
-      message: res.msg,
+      message: res.message,
       type: 'error',
       duration: 5 * 1000
     });
-    return Promise.reject('error');
+    return new Promise.reject('error');
   },
   error => {
     console.log('err' + error);// for debug
+    if (error.response) {
+      if (error.response.status === 404) {
+        Message.error(`请求资源不存在：[${method}] => ${api}`);
+        return;
+      }
+    }
+
     Message({
       message: error.message,
       type: 'error',

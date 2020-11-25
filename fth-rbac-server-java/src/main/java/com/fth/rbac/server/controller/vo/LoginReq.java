@@ -18,4 +18,7 @@ public class LoginReq {
 
     @ApiModelProperty("密码")
     private String password;
+
+    @ApiModelProperty("验证码")
+    private String captcha;
 }

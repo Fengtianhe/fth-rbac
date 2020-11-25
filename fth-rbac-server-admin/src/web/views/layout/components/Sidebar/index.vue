@@ -75,7 +75,7 @@ export default {
         overflow-y: scroll;
         overflow-x: hidden;
         height: 100%;
-        width: 185px;
+        width: 200px;
       }
     }
   }

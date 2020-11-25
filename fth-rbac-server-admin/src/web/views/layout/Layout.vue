@@ -20,6 +20,8 @@ export default {
     AppMain,
     TagsView
   },
+  created() {
+  },
   computed: {},
   methods: {}
 };

@@ -12,6 +12,7 @@ import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
 import com.fth.rbac.server.core.utils.common.ResponseConstant;
 import com.fth.rbac.server.core.utils.date.DatePattern;
+import com.fth.rbac.server.core.utils.redis.RedisHelper;
 import com.fth.rbac.server.service.SysUserService;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +78,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
         // 检查token以及角色访问页面权限
         try {
-            verifyToken(request);
+            String userId = verifyToken(request);
         } catch (Exception e) {
             sendJsonMessage(response, e.getMessage());
             return false;

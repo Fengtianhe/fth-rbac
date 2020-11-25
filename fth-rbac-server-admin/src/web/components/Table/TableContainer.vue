@@ -3,10 +3,10 @@
     <div class="table">
       <el-table stripe>
         <el-table-column
-            v-for="col in columns"
-            :key="`${col.label}-${col.prop}`"
-            :label="col.label"
-            :prop="col.prop"
+                v-for="col in columns"
+                :key="`${col.label}-${col.prop}`"
+                :label="col.label"
+                :prop="col.prop"
         ></el-table-column>
         <slot name="column"></slot>
       </el-table>
@@ -30,11 +30,15 @@ export default {
       default: function () {
         return [];
       }
+    },
+    url: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      baseUrl: '/api/app/application/list',
+      baseUrl: this.url,
       tableData: {},
       filterForm: {}
     };

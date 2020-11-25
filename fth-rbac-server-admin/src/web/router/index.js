@@ -23,7 +23,7 @@ const routes = [
     path: '/application',
     component: Layout,
     name: '应用管理',
-    redirect: '/application/app/list',
+    redirect: '/application/user/list',
     children: [
       { path: 'app/list', name: '应用列表', component: () => import('@web/views/app/application/list') },
       { path: 'resource/list', name: '应用资源', component: () => import('@web/views/dashboard') },

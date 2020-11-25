@@ -19,7 +19,11 @@
       </el-form>
     </div>
 
-    <table-container style="flex:1" :columns="tableColumns" ref="table">
+    <table-container
+            :url='tableDataUrl'
+            style="flex:1"
+            :columns="tableColumns"
+            ref="table">
       <template slot="column">
         <el-table-column label="操作"></el-table-column>
       </template>
@@ -54,23 +58,25 @@
 <script>
 
 import TableContainer from '@web/components/Table/TableContainer';
+import { AppApplicationService } from '@web/service';
 
 export default {
   name: 'list',
   components: { TableContainer },
-  data () {
+  data() {
     return {
+      tableDataUrl: AppApplicationService.URL_APP_APPLICATION_LIST,
       filterForm: {
         appId: '',
         appName: '',
         creator: ''
       },
       tableColumns: [
-        {label: '应用ID', prop: 'appId'},
-        {label: '应用名称', prop: 'appName'},
-        {label: '负责人', prop: 'monitor'},
-        {label: '创建人', prop: 'creator'},
-        {label: '创建时间', prop: 'createdAt'}
+        { label: '应用ID', prop: 'appId' },
+        { label: '应用名称', prop: 'appName' },
+        { label: '负责人', prop: 'monitor' },
+        { label: '创建人', prop: 'creator' },
+        { label: '创建时间', prop: 'createdAt' }
       ],
       dialog: true,
       dialogType: '新增',
@@ -80,7 +86,7 @@ export default {
         monitor: '',
         creator: ''
       }
-    }
+    };
   }
 };
 </script>

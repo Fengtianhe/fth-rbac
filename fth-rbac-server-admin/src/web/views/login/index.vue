@@ -1,203 +1,237 @@
 <template>
-  <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm"
-             label-position="left">
-      <h3 class="title">门神——基于资源的多平台权限管理系统</h3>
-      <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
-          <i class="el-icon-user"></i>
-        </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入账户名"/>
-      </el-form-item>
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <i class="el-icon-lock"></i>
-        </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password"
-                  autoComplete="on"
-                  placeholder="请输入密码"></el-input>
-        <span class="show-pwd" @click="showPwd">
-          <i class="el-icon-view"></i>
-        </span>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-          登录
-        </el-button>
-      </el-form-item>
-      <!--<div style="color: white;font-size: 14px">
-        <p>超级管理员(超权限)：admin 密码：123456</p>
-        <p>普通帐户(普通权限)：normal 密码：123456</p>
-        <p>备注：超级管理员可以操作用户和编辑用户权限，查看所有注册资源；<br>普通帐户只能查看自己创建的资源或者被超级管理员分配的资源</p>
-        <span>备注：</span><a href="https://github.com/amanxu/xxl-job-admin-boot" style=""><u>Github 项目源码地址</u></a>
-      </div>-->
-    </el-form>
+  <div class="main">
+    <div class="header box">
+      <div class="header-container">
+        <div class="header-title">门神——基于资源的多平台权限管理系统</div>
+        <div class="header-img"></div>
+      </div>
+    </div>
+    <div class="center-container box">
+      <div class="center-left"></div>
+      <div class="center-right">
+        <div class="login-form"></div>
+        <el-form
+                ref="loginForm"
+                :model="loginForm"
+                :rules="loginRules"
+                class="login-form"
+                auto-complete="on"
+                label-position="left"
+        >
+          <el-form-item prop="username">
+            <el-input
+                    ref="username"
+                    v-model="loginForm.username"
+                    placeholder="请输入用户名"
+                    name="username" type="text"
+                    tabindex="1"
+                    auto-complete="on"
+                    prefix-icon="el-icon-user-solid"
+                    @blur="getCode()"
+            />
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+                    :key="passwordType"
+                    ref="password"
+                    v-model="loginForm.password"
+                    :type="passwordType"
+                    placeholder="请输入密码"
+                    name="password"
+                    tabindex="2"
+                    auto-complete="on"
+                    @keyup.enter.native="handleLogin"
+                    prefix-icon="el-icon-monitor"/>
+          </el-form-item>
+          <el-checkbox v-model="checked" style="color: white;" @change="showPwd">显示密码</el-checkbox>
+
+          <div class="box" v-show="showCaptcha">
+            <div class="verify-code">
+              <el-input
+                      v-model="loginForm.captcha"
+                      placeholder="不区分大小写"
+                      @keyup.enter.native="handleLogin"
+              ></el-input>
+            </div>
+            <div class="verify-img">
+              <div class="img-code">
+                <img :src="getCode" alt="二维码" id="code" @click="getCode">
+              </div>
+            </div>
+          </div>
+
+          <el-button :loading="loading" type="primary" style="width: 100%; margin-top: 10px;"
+                     @click.native.prevent="handleLogin">登录
+          </el-button>
+        </el-form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import $ from 'jquery';
+import { SysUserService } from '@web/service';
+import md5 from 'md5';
+import sysUser from '@web/service/modules/sysUser';
 
 export default {
-  name: 'login',
+  name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      //if (!isvalidUsername(value)) {
-      if (value === '') {
-        callback(new Error('请输入用户名'));
-      } else {
-        callback();
-      }
-    };
-    const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'));
-      } else {
-        callback();
-      }
-    };
     return {
+      loading: false,
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        captcha: ''
       },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
-      },
-      loading: false,
-      pwdType: 'password'
+      showCaptcha: false,
+      loginRules: {},
+      passwordType: 'password',
+      checked: false
     };
   },
+  mounted() {
+  },
   methods: {
-    showPwd() {
-      if (this.pwdType === 'password') {
-        this.pwdType = '';
-      } else {
-        this.pwdType = 'password';
+    getCode() {
+      if (!this.loginForm.username) {
+        return;
       }
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          this.$store.dispatch('Login', this.loginForm).then(() => {
-            console.log('OK');
-            this.loading = false;
-            this.$router.push({ path: '/' });
-          }).catch(() => {
-            this.loading = false;
-          });
-        } else {
-          console.log('error submit!!');
-          return false;
+      const that = this;
+      let url = `/api/sys/user/captcha?username=${this.loginForm.username}`;
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.responseType = 'blob';
+      xhr.onload = function () {
+        if (this.status === 200) {
+          let res = this.response;
+          $('#code').attr('src', window.URL.createObjectURL(res));
+          that.showCaptcha = true;
         }
+      };
+      xhr.send();
+    },
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = '';
+      } else {
+        this.passwordType = 'password';
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus();
       });
+    },
+    async handleLogin() {
+      this.loginForm.password = md5(this.loginForm.password);
+      this.loading = true;
+      const response = await SysUserService.login(this.loginForm);
+      if (response.code === 200) {
+        this.$store.commit('SET_TOKEN', response.data);
+        await SysUserService.info();
+        this.$router.push({ path: '/' });
+      } else if (response.code === 604) {
+        this.getCode();
+        this.loginForm.captcha = '';
+      }
+      this.loading = false;
     }
   }
 };
 </script>
 
 <style rel="stylesheet/less" lang="less">
-  @bg: #2d3a4b;
-  @light_gray: #eee;
+  .img-code {
+    margin: 5px 0 0 5px;
+    width: 200px;
+    height: 40px;
+  }
 
-  /* reset element-ui css */
-  .login-container {
-    .el-input {
-      display: inline-block;
-      height: 47px;
-      width: 85%;
+  .verify-code {
+    width: 40%;
+    height: 50px;
+    margin-top: 5px;
+  }
 
-      input {
-        background: transparent;
-        border: 0px;
-        -webkit-appearance: none;
-        border-radius: 0px;
-        padding: 12px 5px 12px 15px;
-        color: @light_gray;
-        height: 47px;
+  .verify-img {
+    width: 60%;
+    height: 50px;
+  }
 
-        &:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0px 1000px @bg inset !important;
-          -webkit-text-fill-color: #fff !important;
-        }
-      }
+  .main {
+    width: 100%;
+    height: 100%;
+    background: url("../../../common/assets/images/bj.jpg");
+  }
+
+  .header {
+    width: 1920px;
+    height: 180px;
+  }
+
+  .box {
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+  }
+
+  .header-container {
+    /*border: 1px solid pink;*/
+  }
+
+  .header-title {
+    text-align: center;
+    color: #ffffff;
+    font-size: 32px;
+    line-height: 84px;
+  }
+
+  .header-img {
+    background: url("../../../common/assets/images/head.gif") no-repeat center center;
+    background-size: 100%;
+    height: 96px;
+    width: 960px;
+  }
+
+  .center-container {
+    width: 1920px;
+    height: 464px;
+  }
+
+  .center-left {
+    width: 491px;
+    height: 464px;
+    background: url("../../../common/assets/images/d.png") no-repeat;
+    background-size: 100% 100%;
+  }
+
+  @-webkit-keyframes rotation {
+    from {
+      -webkit-transform: rotate(0deg);
     }
-
-    .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
-    }
-
-    .el-form-item__content {
-      margin-left: 0 !important
+    to {
+      -webkit-transform: rotate(360deg);
     }
   }
 
-</style>
+  .center-container .center-left {
+    -webkit-transform: rotate(360deg);
+    animation: rotation 15s linear infinite;
+    -moz-animation: rotation 15s linear infinite;
+    -webkit-animation: rotation 15s linear infinite;
+    -o-animation: rotation 15s linear infinite;
+  }
 
-<style lang="less" scoped>
-  @bg: #2d3a4b;
-  @dark_gray: #889aa4;
-  @light_gray: #eee;
-  .login-container {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    background-color: @bg;
+  .center-right {
+    width: 432px;
+    height: 464px;
+    background: url("../../../common/assets/images/e.png") no-repeat;
+    background-size: 100% 100%;
+    margin-left: 200px;
+  }
 
-    .login-form {
-      position: absolute;
-      left: 0;
-      right: 0;
-      width: 520px;
-      padding: 35px 35px 15px 35px;
-      margin: 120px auto;
-    }
-
-    .tips {
-      font-size: 14px;
-      color: #fff;
-      margin-bottom: 10px;
-
-      span {
-        &:first-of-type {
-          margin-right: 16px;
-        }
-      }
-    }
-
-    .svg-container {
-      padding: 6px 5px 6px 15px;
-      color: @dark_gray;
-      vertical-align: middle;
-      width: 30px;
-      display: inline-block;
-
-      &_login {
-        font-size: 20px;
-      }
-    }
-
-    .title {
-      font-size: 26px;
-      font-weight: 400;
-      color: @light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .show-pwd {
-      position: absolute;
-      right: 10px;
-      top: 7px;
-      font-size: 16px;
-      color: @dark_gray;
-      cursor: pointer;
-      user-select: none;
-    }
+  .login-form {
+    width: 80%;
+    margin: 150px 0 0 10%;
   }
 </style>
