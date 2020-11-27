@@ -36,7 +36,7 @@ const routes = [
     name: '系统管理',
     redirect: '/application/user/list',
     children: [
-      { path: 'user/list', name: '用户管理', component: () => import('@web/views/dashboard') },
+      { path: 'user/list', name: '用户管理', component: () => import('@web/views/sys/user/list') },
     ]
   },
   { path: '*', redirect: '/404' }

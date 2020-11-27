@@ -22,7 +22,7 @@ public class AuthorizationConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authorizationInterceptor).addPathPatterns("/gateway/god/**");
+        registry.addInterceptor(authorizationInterceptor).addPathPatterns("/api/**");
     }
 
 

@@ -2,18 +2,27 @@ package com.fth.rbac.server.service.impl;
 
 import com.fth.rbac.server.aop.token.TokenManager;
 import com.fth.rbac.server.controller.vo.LoginReq;
+import com.fth.rbac.server.controller.vo.UserInfo;
 import com.fth.rbac.server.core.entity.FrSysUser;
 import com.fth.rbac.server.core.entity.FrSysUserExample;
+import com.fth.rbac.server.core.enums.SysUserStatusEnum;
+import com.fth.rbac.server.core.enums.base.EnumFactory;
 import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCode;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.mapper.FrSysUserMapper;
 import com.fth.rbac.server.core.utils.SecurityHelper;
+import com.fth.rbac.server.core.utils.common.PaginationRequest;
+import com.fth.rbac.server.core.utils.common.PaginationResponse;
 import com.fth.rbac.server.service.SysUserService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,5 +72,30 @@ public class SysUserServiceImpl implements SysUserService {
         //生成一个token，保存用户登录状态
         String token = tokenManager.createToken(user.getId().toString());
         return token;
+    }
+
+    @Override
+    public UserInfo selectInfoById(Integer userId) {
+        UserInfo info = new UserInfo();
+        FrSysUser user = this.selectById(userId);
+        BeanUtils.copyProperties(user, info);
+        return info;
+    }
+
+    @Override
+    public PaginationResponse<UserInfo> selectWithPagination(PaginationRequest request) {
+        Page page = PageHelper.startPage(request.getPageNumber(), request.getPageSize());
+        FrSysUserExample example = new FrSysUserExample();
+        List<FrSysUser> frSysUsers = sysUserMapper.selectByExample(example);
+
+        List<UserInfo> users = new ArrayList<>();
+        frSysUsers.forEach(u -> {
+            UserInfo user = new UserInfo();
+            BeanUtils.copyProperties(u, user);
+            user.setStatus(EnumFactory.getByValue(SysUserStatusEnum.class, u.getStatus().intValue()).getLabel());
+            users.add(user);
+        });
+
+        return new PaginationResponse<>(users, page);
     }
 }

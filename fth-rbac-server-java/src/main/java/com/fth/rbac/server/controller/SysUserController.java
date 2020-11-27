@@ -8,6 +8,8 @@ import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.utils.SecurityHelper;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
 import com.fth.rbac.server.core.utils.common.ExceptionCode;
+import com.fth.rbac.server.core.utils.common.PaginationRequest;
+import com.fth.rbac.server.core.utils.common.PaginationResponse;
 import com.fth.rbac.server.core.utils.redis.RedisHelper;
 import com.fth.rbac.server.service.SysUserService;
 import com.wf.captcha.SpecCaptcha;
@@ -65,6 +67,13 @@ public class SysUserController {
         String text = specCaptcha.text();
         redisHelper.set("VERIFY_CODE" + "_" + username, text, 5 * 60, TimeUnit.SECONDS);
         specCaptcha.out(response.getOutputStream());
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("用户列表")
+    public CommonResponse<PaginationResponse<UserInfo>> list(@RequestParam PaginationRequest request) {
+        PaginationResponse<UserInfo> lists = sysUserService.selectWithPagination(request);
+        return CommonResponse.withSuccessResp(lists);
     }
 
     private void verifyCaptcha(String username, String captcha) {

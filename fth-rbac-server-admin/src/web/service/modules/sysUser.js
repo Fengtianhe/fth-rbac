@@ -1,7 +1,9 @@
 import service from '@common/utils/request';
 import store from '@web/store';
 
+const URL_SYS_USER_LIST = '/api/sys/user/list';
 export default {
+  URL_SYS_USER_LIST,
   /**
    * 登录
    * @param params

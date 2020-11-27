@@ -12,11 +12,6 @@
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu class="user-dropdown" slot="dropdown">
-          <router-link class="inlineBlock" to="/">
-            <el-dropdown-item>
-              主页
-            </el-dropdown-item>
-          </router-link>
           <el-dropdown-item divided>
             <span @click="userDetailDialog" style="display:block;">编辑资料</span>
           </el-dropdown-item>
@@ -27,23 +22,23 @@
       </el-dropdown>
     </el-menu>
     <el-dialog class="modify-user-dialog" title="编辑个人资料" :visible.sync="dialogFormVisible" center>
-      <el-form :model="userForm" :rules="rules" ref="userForm">
-        <el-form-item label="用户名" label-width="60px" prop="userName">
-          <el-input v-model="userForm.userName" auto-complete="off" maxlength="32" :disabled="true"></el-input>
+      <el-form :model="userForm" :rules="rules" ref="userForm" label-width="80px">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="userForm.username" auto-complete="off" maxlength="32" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="姓名" label-width="60px" prop="realName">
+        <el-form-item label="姓名" prop="realName">
           <el-input v-model="userForm.realName" auto-complete="off" maxlength="180"
                     placeholder="请输入真实姓名"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" label-width="60px" prop="phone">
+        <el-form-item label="手机号" prop="phone">
           <el-input v-model="userForm.phone" auto-complete="off" maxlength="16"
                     placeholder="请输入手机号"></el-input>
         </el-form-item>
 
-        <el-form-item label="密码" label-width="60px" prop="pass">
+        <el-form-item label="密码" prop="pass">
           <el-input type="password" v-model="userForm.password" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" label-width="60px" prop="checkPass">
+        <el-form-item label="确认密码" prop="checkPass">
           <el-input type="password" v-model="userForm.checkPass" auto-complete="off"></el-input>
         </el-form-item>
 
@@ -91,7 +86,7 @@ export default {
       dialogFormVisible: false,
       userForm: {
         id: null,
-        userName: '',
+        username: '',
         realName: '',
         phone: '',
         userType: null,
@@ -99,7 +94,7 @@ export default {
         checkPass: ''
       },
       rules: {
-        userName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '手机号不能为空' }],
         pass: [
@@ -129,20 +124,8 @@ export default {
     },
     userDetailDialog() {
       this.dialogFormVisible = true;
-      getUserInfo(getToken).then(res => {
-        const { code, content: { id, userName, realName, userType, phone, password } } = res;
-        if (code === 200) {
-          this.userForm.id = id;
-          this.userForm.userName = userName;
-          this.userForm.realName = realName;
-          this.userForm.phone = phone;
-          this.userForm.userType = userType;
-          this.userForm.password = password;
-          this.userForm.checkPass = password;
-        }
-      }).catch(function (err) {
-        console.log(err.message);
-      });
+      const { username } = this.user;
+      this.userForm.username = username;
     },
     updateUserForm() {
       update(this.userForm).then(res => {
@@ -165,7 +148,8 @@ export default {
       });
     }
   }
-};
+}
+;
 </script>
 
 <style lang="less" scoped>

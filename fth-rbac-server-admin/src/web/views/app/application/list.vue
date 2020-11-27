@@ -14,7 +14,7 @@
         <el-form-item>
           <el-button type="primary" @click="$refs['table'].setFilter()">查询</el-button>
           <el-button @click="$refs['table'].resetFilter()">重置条件</el-button>
-          <el-button>新增应用</el-button>
+          <el-button @click="showDetailDialog({})">新增应用</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -48,8 +48,8 @@
       </el-form>
 
       <div slot="footer">
-        <el-button>取消</el-button>
-        <el-button type="primary">提交</el-button>
+        <el-button @click="onCancelSubmit()">取消</el-button>
+        <el-button type="primary" @click="onConfirmSubmit()">提交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -78,7 +78,7 @@ export default {
         { label: '创建人', prop: 'creator' },
         { label: '创建时间', prop: 'createdAt' }
       ],
-      dialog: true,
+      dialog: false,
       dialogType: '新增',
       dialogForm: {
         appId: '',
@@ -87,6 +87,19 @@ export default {
         creator: ''
       }
     };
+  },
+  methods: {
+    showDetailDialog(data = {}) {
+      this.dialogForm = data;
+      this.dialog = true;
+    },
+    onCancelSubmit() {
+      this.dialog = false;
+      this.dialogForm = {};
+    },
+    onConfirmSubmit() {
+
+    }
   }
 };
 </script>

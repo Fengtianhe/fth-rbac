@@ -34,8 +34,8 @@ service.interceptors.response.use(response => {
       return res;
     }
     if (res.code === 401) {
-      Message.error('请重新登录');
-      window.$router.push({ path: 'login' });
+      // Message.error('请重新登录');
+      window.$router.push({ path: '/login' });
       return;
     }
     if (res.code === 404) {
