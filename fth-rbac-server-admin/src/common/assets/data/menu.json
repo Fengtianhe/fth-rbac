@@ -11,10 +11,6 @@
         "path": "/application/app/list"
       },
       {
-        "name": "应用资源",
-        "path": "/application/resource/list"
-      },
-      {
         "name": "应用角色",
         "path": "/application/role/list"
       }

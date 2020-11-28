@@ -7,18 +7,15 @@ import 'element-ui/lib/theme-chalk/index.css';
 import request from '@common/utils/request';
 import '@common/filter';
 
-import TableMixinConfig from '@/common/mixin/TableMixinConfig'
+import {TableMixinConfig} from 'element-table-mixin'
 
 TableMixinConfig.REQUEST = request
+TableMixinConfig.EL_TABLE_SIZE = "mini"
+TableMixinConfig.EL_TABLE_BORDER = false
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
-
-// 本地开发显示所有目录
-import menus from '@/common/assets/data/menu';
-
-store.commit('SET_MENUS', menus);
 
 new Vue({
   render: h => h(App),

@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "element-table-mixin": "^0.0.10",
     "element-ui": "^2.14.1",
     "jquery": "^3.5.1",
     "md5": "^2.3.0",

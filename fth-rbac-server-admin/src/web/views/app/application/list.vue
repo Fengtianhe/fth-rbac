@@ -52,7 +52,7 @@
 
 <script>
 
-import TableContainer from '@web/components/Table/TableContainer';
+import {TableContainer} from 'element-table-mixin';
 import {AppApplicationService} from '@web/service';
 import {tableFormatDate} from "@common/utils/table";
 
@@ -71,11 +71,12 @@ export default {
         {label: '应用ID', prop: 'appId'},
         {label: '应用名称', prop: 'appName'},
         {label: '创建人', prop: 'creatorName'},
-        {label: '创建时间', prop: 'createdAt', formatter: tableFormatDate}
+        {label: '创建时间', prop: 'createdAt', align: 'center', width: '130px', formatter: tableFormatDate}
       ],
       tableOps: [
         {command: 'EDIT', name: '编辑', handle: this.showEditDialog},
-        {command: 'DISABLE', name: '停用', handle: this.showEditDialog}
+        {command: 'DISABLE', name: '停用', handle: this.showEditDialog},
+        {command: 'CAT_RESOURCE', name: '查看资源', handle: this.toAppResource},
       ],
       dialog: false,
       dialogType: '新增',
@@ -104,6 +105,9 @@ export default {
     },
     showEditDialog (scope) {
       console.log(scope)
+    },
+    toAppResource (scope) {
+      this.$router.push({path: '/application/resource/list', query: {appId: scope.row.appId}})
     }
   }
 };

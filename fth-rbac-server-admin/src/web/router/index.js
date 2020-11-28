@@ -9,14 +9,14 @@ import Layout from '../views/layout/Layout';
 Vue.use(Router);
 
 const routes = [
-  { path: '/login', component: () => import('@web/views/login') },
-  { path: '/404', component: () => import('@web/views/404') },
+  {path: '/login', component: () => import('@web/views/login')},
+  {path: '/404', component: () => import('@web/views/404')},
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard/index',
     children: [
-      { path: '/dashboard/index', name: '主页', component: () => import('@web/views/dashboard') },
+      {path: '/dashboard/index', name: '主页', component: () => import('@web/views/dashboard')},
     ]
   },
   {
@@ -25,9 +25,9 @@ const routes = [
     name: '应用管理',
     redirect: '/application/user/list',
     children: [
-      { path: 'app/list', name: '应用列表', component: () => import('@web/views/app/application/list') },
-      { path: 'resource/list', name: '应用资源', component: () => import('@web/views/dashboard') },
-      { path: 'role/list', name: '应用角色', component: () => import('@web/views/dashboard') },
+      {path: 'app/list', name: '应用列表', component: () => import('@web/views/app/application/list')},
+      {path: 'resource/list', name: '应用资源', component: () => import('@web/views/app/resource/list')},
+      {path: 'role/list', name: '应用角色', component: () => import('@web/views/dashboard')},
     ]
   },
   {
@@ -36,10 +36,10 @@ const routes = [
     name: '系统管理',
     redirect: '/application/user/list',
     children: [
-      { path: 'user/list', name: '用户管理', component: () => import('@web/views/sys/user/list') },
+      {path: 'user/list', name: '用户管理', component: () => import('@web/views/sys/user/list')},
     ]
   },
-  { path: '*', redirect: '/404' }
+  {path: '*', redirect: '/404'}
 ];
 
 export default new Router({

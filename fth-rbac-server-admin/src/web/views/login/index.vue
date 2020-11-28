@@ -128,6 +128,7 @@ export default {
       if (response.code === 200) {
         this.$store.commit('SET_TOKEN', response.data);
         await SysUserService.info();
+        this.$store.commit('SET_MENUS');
         this.$router.push({ path: '/' });
       } else if (response.code === 604) {
         this.getCode();

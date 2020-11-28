@@ -21,7 +21,15 @@ const user = {
       }
     }
   },
-  actions: {}
+  actions: {
+    LOGOUT ({commit}) {
+      return new Promise((resolve) => {
+        commit('CLEAR_TOKEN');
+        commit('CLEAR_MENUS')
+        resolve();
+      });
+    }
+  }
 };
 
 export default user;

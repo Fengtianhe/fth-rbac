@@ -117,10 +117,8 @@ export default {
       this.$store.dispatch('ToggleSideBar');
     },
     logout() {
-      console.log('登出？');
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload(); // 为了重新实例化vue-router对象 避免bug
-      });
+      this.$store.dispatch('LOGOUT');
+      this.$router.push({path: '/login'});
     },
     userDetailDialog() {
       this.dialogFormVisible = true;

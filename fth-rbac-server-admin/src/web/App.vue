@@ -30,9 +30,11 @@ export default {
 
     // 判断当前用户是否登录
     if (!this.$store.state.user.token) {
+      this.$store.dispatch('LOGOUT');
       this.$router.push({ path: '/login' });
     } else {
       SysUserService.info();
+      this.$store.commit('SET_MENUS')
     }
     localStorage.removeItem('store');
   }

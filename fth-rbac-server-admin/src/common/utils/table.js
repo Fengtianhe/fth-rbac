@@ -25,6 +25,26 @@ export function dateTimeFormat (format, time = new Date()) {
   return format
 }
 
+export function numberFormat (value) {
+  if (value === null || value === undefined) return '-'
+
+  let isMinus = value < 0 // 是否是负数
+
+  value = isMinus ? value.toString().substr(1) : value.toString()
+  value = value.replace(/^(\d*)$/, '$1.')
+  value = (`${value}00`).replace(/(\d*\.\d\d)\d*/, '$1')
+  value = value.replace('.', ',')
+  const re = /(\d)(\d{3},)/
+
+  while (re.test(value)) {
+    value = value.replace(re, '$1,$2')
+  }
+
+  value = value.replace(/,(\d\d)$/, '.$1')
+
+  return isMinus ? '-' + value.replace(/^\./, '0.') : value.replace(/^\./, '0.')
+}
+
 
 export function tableFormatDateTime (row, column, cellValue) {
   if (!cellValue) return '-';
@@ -45,9 +65,9 @@ export function tableFormatDate (row, column, cellValue) {
 }
 
 
-// export function tableFormatNumber (row, column, cellValue) {
-//   return Utils.Number.format(cellValue);
-// }
+export function tableFormatNumber (row, column, cellValue) {
+  return numberFormat(cellValue);
+}
 
 
 export function tableFormatPercent (row, column, cellValue) {

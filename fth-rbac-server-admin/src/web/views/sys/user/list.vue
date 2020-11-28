@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import TableContainer from '@web/components/Table/TableContainer';
+import {TableContainer} from 'element-table-mixin';
 import { SysUserService } from '@web/service';
 
 export default {
