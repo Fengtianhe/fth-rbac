@@ -9,9 +9,16 @@ const user = {
     SET_TOKEN: function (state, token) {
       state.token = token;
     },
+    CLEAR_TOKEN: function (state) {
+      state.token = ''
+    },
     SET_USER_INFO: async function (state) {
-      const response = await service.get('/api/sys/user/info');
-      state.info = response.data;
+      if (state.token) {
+        const response = await service.get('/api/sys/user/info');
+        state.info = response.data;
+      } else {
+        this.CLEAR_TOKEN(state)
+      }
     }
   },
   actions: {}

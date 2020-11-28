@@ -11,24 +11,24 @@ import java.util.List;
 @ApiModel
 public class PaginationResponse<T> {
     @ApiModelProperty("列表数据")
-    private List<T> content;
+    private List<T> lists;
     @ApiModelProperty("总页数")
-    private Integer totalPages;
+    private Integer pages;
     @ApiModelProperty("总条数")
-    private Long totalElements;
+    private Long total;
     @ApiModelProperty("单页请求条数")
     private Integer size;
     @ApiModelProperty("当前页码")
-    private Integer requestPager;
+    private Integer pageNum;
 
     public PaginationResponse() {
     }
 
     public PaginationResponse(List<T> list, Page page) {
-        this.totalElements = page.getTotal();
-        this.totalPages = page.getPages();
+        this.total = page.getTotal();
+        this.pages = page.getPages();
         this.size = page.getPageSize();
-        this.requestPager = page.getPageNum();
-        this.content = list;
+        this.pageNum = page.getPageNum();
+        this.lists = list;
     }
 }

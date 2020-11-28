@@ -1,5 +1,7 @@
 package com.fth.rbac.server.service;
 
+import com.fth.rbac.server.controller.vo.FrAppApplicationVo;
+import com.fth.rbac.server.controller.vo.SaveApplicationReq;
 import com.fth.rbac.server.core.entity.FrAppApplication;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
@@ -17,7 +19,12 @@ public interface AppApplicationService {
      * @param request 请求参数
      * @return
      */
-    PaginationResponse<FrAppApplication> selectWithPagination(PaginationRequest request);
+    PaginationResponse<FrAppApplicationVo> selectWithPagination(PaginationRequest request);
 
     List<FrAppApplication> selectAll();
+
+    void add(SaveApplicationReq applicationReq, Integer userId);
+
+    FrAppApplication selectByAppId(String appId);
+
 }

@@ -128,24 +128,24 @@ export default {
       this.userForm.username = username;
     },
     updateUserForm() {
-      update(this.userForm).then(res => {
-          const { code, msg } = res;
-          if (code === 200) {
-            this.$message({
-              message: '修改成功',
-              type: 'success'
-            });
-            this.dialogFormVisible = false;
-          } else {
-            this.$message({
-              message: msg,
-              type: 'error'
-            });
-          }
-        }
-      ).catch(function (err) {
-        console.log(err.message);
-      });
+      // update(this.userForm).then(res => {
+      //     const { code, msg } = res;
+      //     if (code === 200) {
+      //       this.$message({
+      //         message: '修改成功',
+      //         type: 'success'
+      //       });
+      //       this.dialogFormVisible = false;
+      //     } else {
+      //       this.$message({
+      //         message: msg,
+      //         type: 'error'
+      //       });
+      //     }
+      //   }
+      // ).catch(function (err) {
+      //   console.log(err.message);
+      // });
     }
   }
 }

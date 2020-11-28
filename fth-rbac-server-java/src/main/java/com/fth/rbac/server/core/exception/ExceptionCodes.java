@@ -11,4 +11,5 @@ public interface ExceptionCodes {
     ExceptionCode LOGIN_PASSWORD_ERROR = new ExceptionCode(603, "密码输入有误");
     ExceptionCode LOGIN_CAPTCHA_ERROR = new ExceptionCode(604, "验证码输入错误");
     ExceptionCode USER_DUPLICATE = new ExceptionCode(605, "用戶重复");
+    ExceptionCode APPLICATION_DUPLICATE = new ExceptionCode(606, "AppID重复");
 }

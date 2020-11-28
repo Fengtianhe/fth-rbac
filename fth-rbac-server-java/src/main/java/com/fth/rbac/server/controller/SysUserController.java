@@ -7,7 +7,6 @@ import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.utils.SecurityHelper;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
-import com.fth.rbac.server.core.utils.common.ExceptionCode;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
 import com.fth.rbac.server.core.utils.redis.RedisHelper;
@@ -16,7 +15,6 @@ import com.wf.captcha.SpecCaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 

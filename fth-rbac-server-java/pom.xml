@@ -141,6 +141,12 @@
             <artifactId>easy-captcha</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <!--   验证模块     -->
+        <dependency>
+            <groupId>net.sf.oval</groupId>
+            <artifactId>oval</artifactId>
+            <version>1.87</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

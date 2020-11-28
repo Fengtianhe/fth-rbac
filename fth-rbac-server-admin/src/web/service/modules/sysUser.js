@@ -15,5 +15,5 @@ export default {
    * 获取用户信息
    * @param params
    */
-  info: (params = {}) => store.commit('SET_USER_INFO')
+  info: () => store.commit('SET_USER_INFO')
 };

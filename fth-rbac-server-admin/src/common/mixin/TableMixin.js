@@ -1,22 +1,6 @@
-import Utils from '@common/utils/request';
-import axios from 'axios';
 import { getPropByPath } from '@common/utils/objectHelper';
-// 每页默认数量
-let PAGE_SIZE_DEFAULT = 15;
-// 默认页码
-let PAGE_NUM_DEFAULT = 1;
-// 请求的页码字段
-let REQUEST_PAGENUM_FIELD = 'pageNum';
-// 请求的每页条数字段
-let REQUEST_PAGESIZE_FIELD = 'pageSize';
-// 列表数据对应字段
-let RESPONSE_LIST_FIELD = 'lists';
-// 每页数量对应的字段
-let RESPONSE_PAGESIZE_FIELD = 'pageSize';
-// 页码对应的字段
-let RESPONSE_PAGENUM_FIELD = 'pageNum';
-// 总条数对应的字段
-let RESPONSE_TOTAL_FIELD = 'total';
+import TableMixinConfig from "@common/mixin/TableMixinConfig";
+
 
 const TableMixin = {
   mounted() {
@@ -57,11 +41,11 @@ const TableMixin = {
           }
         }
 
-        if (urlQuery[REQUEST_PAGENUM_FIELD]) {
-          self.tableData[RESPONSE_PAGENUM_FIELD] = urlQuery[REQUEST_PAGENUM_FIELD] ? parseInt(urlQuery[REQUEST_PAGENUM_FIELD]) : PAGE_NUM_DEFAULT;
+        if (urlQuery[TableMixinConfig.REQUEST_PAGENUM_FIELD]) {
+          self[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.RESPONSE_PAGENUM_FIELD] = urlQuery[TableMixinConfig.REQUEST_PAGENUM_FIELD] ? parseInt(urlQuery[TableMixinConfig.REQUEST_PAGENUM_FIELD]) : TableMixinConfig.PAGE_NUM_DEFAULT;
         }
-        if (urlQuery[REQUEST_PAGESIZE_FIELD]) {
-          self.tableData[RESPONSE_PAGESIZE_FIELD] = urlQuery[REQUEST_PAGESIZE_FIELD] ? parseInt(urlQuery[REQUEST_PAGESIZE_FIELD]) : PAGE_SIZE_DEFAULT;
+        if (urlQuery[TableMixinConfig.REQUEST_PAGESIZE_FIELD]) {
+          self[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.RESPONSE_PAGESIZE_FIELD] = urlQuery[TableMixinConfig.REQUEST_PAGESIZE_FIELD] ? parseInt(urlQuery[TableMixinConfig.REQUEST_PAGESIZE_FIELD]) : TableMixinConfig.PAGE_SIZE_DEFAULT;
         }
 
         self.setFilter();
@@ -109,8 +93,8 @@ const TableMixin = {
     setUrlFilters: function (filters) {
       console.log('table-mixin: setUrlFilters function');
       const self = this;
-      filters[REQUEST_PAGENUM_FIELD] = filters[REQUEST_PAGENUM_FIELD] ? filters[REQUEST_PAGENUM_FIELD] : self.tableData[RESPONSE_PAGENUM_FIELD];
-      filters[REQUEST_PAGESIZE_FIELD] = filters[REQUEST_PAGESIZE_FIELD] ? filters[REQUEST_PAGESIZE_FIELD] : self.tableData[RESPONSE_PAGESIZE_FIELD];
+      filters[TableMixinConfig.REQUEST_PAGENUM_FIELD] = filters[TableMixinConfig.REQUEST_PAGENUM_FIELD] ? filters[TableMixinConfig.REQUEST_PAGENUM_FIELD] : self[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.RESPONSE_PAGENUM_FIELD];
+      filters[TableMixinConfig.REQUEST_PAGESIZE_FIELD] = filters[TableMixinConfig.REQUEST_PAGESIZE_FIELD] ? filters[TableMixinConfig.REQUEST_PAGESIZE_FIELD] : self[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.RESPONSE_PAGESIZE_FIELD];
       self.$router.replace({ path: self.$route.path, query: filters });
       self.fetchTableData(filters);
     },
@@ -118,8 +102,8 @@ const TableMixin = {
       const self = this;
       const baseUrl = self.baseUrl;
       const method = self.tableRequestMethod || 'get';
-      params[REQUEST_PAGENUM_FIELD] = params[REQUEST_PAGENUM_FIELD] ? params[REQUEST_PAGENUM_FIELD] : this.tableData[REQUEST_PAGENUM_FIELD] ? this.tableData[REQUEST_PAGENUM_FIELD] : PAGE_NUM_DEFAULT;
-      params[REQUEST_PAGESIZE_FIELD] = params[REQUEST_PAGESIZE_FIELD] ? params[REQUEST_PAGESIZE_FIELD] : this.tableData[RESPONSE_PAGESIZE_FIELD] ? this.tableData[RESPONSE_PAGESIZE_FIELD] : PAGE_SIZE_DEFAULT;
+      params[TableMixinConfig.REQUEST_PAGENUM_FIELD] = params[TableMixinConfig.REQUEST_PAGENUM_FIELD] ? params[TableMixinConfig.REQUEST_PAGENUM_FIELD] : this[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.REQUEST_PAGENUM_FIELD] ? this[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.REQUEST_PAGENUM_FIELD] : TableMixinConfig.PAGE_NUM_DEFAULT;
+      params[TableMixinConfig.REQUEST_PAGESIZE_FIELD] = params[TableMixinConfig.REQUEST_PAGESIZE_FIELD] ? params[TableMixinConfig.REQUEST_PAGESIZE_FIELD] : this[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.RESPONSE_PAGESIZE_FIELD] ? this[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.RESPONSE_PAGESIZE_FIELD] : TableMixinConfig.PAGE_SIZE_DEFAULT;
       // options.orderBy = this.filterForm && this.filterForm.orderBy ? this.filterForm.orderBy : ''
       if (baseUrl) {
         params.loading = true;
@@ -127,17 +111,16 @@ const TableMixin = {
           method,
           url: baseUrl
         };
-        const res = await axios.request(axiosRequestConfig);
-        let response = res.data;
+        const response = await TableMixinConfig.REQUEST.request(axiosRequestConfig);
         if (!response) {
           throw Error('unknown table data response');
         }
 
-        self.tableData = {
-          lists: getPropByPath(response, RESPONSE_LIST_FIELD) || [],
-          pageSize: getPropByPath(response, RESPONSE_PAGESIZE_FIELD) || PAGE_SIZE_DEFAULT,
-          pageNumber: getPropByPath(response, RESPONSE_PAGENUM_FIELD) || PAGE_NUM_DEFAULT,
-          total: getPropByPath(response, RESPONSE_TOTAL_FIELD) || 0
+        self[TableMixinConfig.TABLE_DATA_FIELD] = {
+          lists: getPropByPath(response, TableMixinConfig.RESPONSE_LIST_FIELD) || [],
+          pageSize: getPropByPath(response, TableMixinConfig.RESPONSE_PAGESIZE_FIELD) || TableMixinConfig.PAGE_SIZE_DEFAULT,
+          pageNumber: getPropByPath(response, TableMixinConfig.RESPONSE_PAGENUM_FIELD) || TableMixinConfig.PAGE_NUM_DEFAULT,
+          total: getPropByPath(response, TableMixinConfig.RESPONSE_TOTAL_FIELD) || 0
         };
         self.afterFetchTableData && self.afterFetchTableData();
       }
@@ -161,46 +144,16 @@ const TableMixin = {
       console.log('table-mixin: fetchWithPagination function');
       const self = this;
       let urlQuery = self.getFilters();
-      urlQuery[REQUEST_PAGENUM_FIELD] = currentPage;
-      if (self.tableData.total) {
+      urlQuery[TableMixinConfig.REQUEST_PAGENUM_FIELD] = currentPage;
+      if (self[TableMixinConfig.TABLE_DATA_FIELD].total) {
         self.setUrlFilters(urlQuery);
       }
     },
     fetchWithPageSize: function (pageSize) {
       console.log('table-mixin: fetchWithPageSize function');
       const self = this;
-      self.tableData[REQUEST_PAGESIZE_FIELD] = pageSize;
+      self[TableMixinConfig.TABLE_DATA_FIELD][TableMixinConfig.REQUEST_PAGESIZE_FIELD] = pageSize;
       self.setFilter();
-    },
-    // **************************************华丽的分割线*********************************************/
-    // 列表数据的格式化项
-    // 格式化时间 DateTime 兼容 Safari
-    tableFormatDateTime(row, column, cellValue) {
-      if (!cellValue) return '-';
-      cellValue = cellValue.replace(new RegExp(/-/gm), '/');
-      let dt = new Date(cellValue);
-
-      return Utils.Time.format('yyyy-MM-dd hh:mm:ss', dt);
-    },
-    // 格式化时间 Date 兼容 Safari
-    tableFormatDate(row, column, cellValue) {
-      if (!cellValue) return '-';
-      cellValue = cellValue.replace(new RegExp(/-/gm), '/');
-      let dt = new Date(cellValue);
-
-      return Utils.Time.format('yyyy-MM-dd', dt);
-    },
-    tableFormatNumber(row, column, cellValue) {
-      return Utils.Number.format(cellValue);
-    },
-    tableFormatPercent(row, column, cellValue) {
-      return Number(cellValue * 100).toFixed(2) + '%';
-    },
-    tableIsNull(row, column, cellValue) {
-      if (cellValue) {
-        return cellValue;
-      }
-      return '-';
     }
   }
 };

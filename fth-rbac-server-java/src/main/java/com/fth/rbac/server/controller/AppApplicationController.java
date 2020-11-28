@@ -1,6 +1,10 @@
 package com.fth.rbac.server.controller;
 
+import com.fth.rbac.server.controller.vo.FrAppApplicationVo;
+import com.fth.rbac.server.controller.vo.SaveApplicationReq;
 import com.fth.rbac.server.core.entity.FrAppApplication;
+import com.fth.rbac.server.core.utils.SecurityHelper;
+import com.fth.rbac.server.core.utils.common.BaseController;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
@@ -10,9 +14,13 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Security;
 import java.util.List;
 
 /**
@@ -23,14 +31,14 @@ import java.util.List;
 @Api(tags = "应用管理-应用")
 @RestController
 @RequestMapping("/api/app/application")
-public class AppApplicationController {
+public class AppApplicationController extends BaseController {
     @Autowired
     private AppApplicationService appApplicationService;
 
     @ApiOperation("应用列表")
     @GetMapping("/list")
-    public CommonResponse<PaginationResponse<FrAppApplication>> list(@ModelAttribute PaginationRequest request) {
-        PaginationResponse<FrAppApplication> pageResponse = appApplicationService.selectWithPagination(request);
+    public CommonResponse<PaginationResponse<FrAppApplicationVo>> list(@ModelAttribute PaginationRequest request) {
+        PaginationResponse<FrAppApplicationVo> pageResponse = appApplicationService.selectWithPagination(request);
         return CommonResponse.withSuccessResp(pageResponse);
     }
 
@@ -39,5 +47,14 @@ public class AppApplicationController {
     public CommonResponse<List<FrAppApplication>> all() {
         List<FrAppApplication> pageResponse = appApplicationService.selectAll();
         return CommonResponse.withSuccessResp(pageResponse);
+    }
+
+    @ApiOperation("新增应用")
+    @PostMapping("")
+    public CommonResponse<Boolean> add(@RequestBody SaveApplicationReq applicationReq, HttpServletRequest httpServletRequest) {
+        validateData(applicationReq);
+        Integer userId = SecurityHelper.userId(httpServletRequest);
+        appApplicationService.add(applicationReq, userId);
+        return CommonResponse.withSuccessResp(true);
     }
 }

@@ -98,4 +98,11 @@ public class SysUserServiceImpl implements SysUserService {
 
         return new PaginationResponse<>(users, page);
     }
+
+    @Override
+    public List<FrSysUser> selectByIds(List<Integer> userIds) {
+        FrSysUserExample example = new FrSysUserExample();
+        example.createCriteria().andIdIn(userIds);
+        return sysUserMapper.selectByExample(example);
+    }
 }

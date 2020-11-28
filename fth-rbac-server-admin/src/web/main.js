@@ -4,8 +4,12 @@ import router from './router';
 import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import '@common/utils/request';
+import request from '@common/utils/request';
 import '@common/filter';
+
+import TableMixinConfig from '@/common/mixin/TableMixinConfig'
+
+TableMixinConfig.REQUEST = request
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;

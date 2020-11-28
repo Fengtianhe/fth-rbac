@@ -20,12 +20,13 @@
     </div>
 
     <table-container
-            :url='tableDataUrl'
-            style="flex:1"
-            :columns="tableColumns"
-            ref="table">
+        :url='tableDataUrl'
+        style="flex:1"
+        :columns="tableColumns"
+        :table-ops="tableOps"
+        ref="table">
       <template slot="column">
-        <el-table-column label="操作"></el-table-column>
+
       </template>
     </table-container>
 
@@ -33,17 +34,11 @@
       <div slot="title">{{dialogType}}应用</div>
 
       <el-form label-width="80px">
-        <el-form-item label="应用ID">
+        <el-form-item label="应用ID" required>
           <el-input v-model="dialogForm.appId"></el-input>
         </el-form-item>
-        <el-form-item label="应用名称">
+        <el-form-item label="应用名称" required>
           <el-input v-model="dialogForm.appName"></el-input>
-        </el-form-item>
-        <el-form-item label="负责人">
-          <el-input v-model="dialogForm.monitor"></el-input>
-        </el-form-item>
-        <el-form-item label="创建人">
-          <el-input v-model="dialogForm.creator"></el-input>
         </el-form-item>
       </el-form>
 
@@ -58,12 +53,13 @@
 <script>
 
 import TableContainer from '@web/components/Table/TableContainer';
-import { AppApplicationService } from '@web/service';
+import {AppApplicationService} from '@web/service';
+import {tableFormatDate} from "@common/utils/table";
 
 export default {
   name: 'list',
-  components: { TableContainer },
-  data() {
+  components: {TableContainer},
+  data () {
     return {
       tableDataUrl: AppApplicationService.URL_APP_APPLICATION_LIST,
       filterForm: {
@@ -72,33 +68,42 @@ export default {
         creator: ''
       },
       tableColumns: [
-        { label: '应用ID', prop: 'appId' },
-        { label: '应用名称', prop: 'appName' },
-        { label: '负责人', prop: 'monitor' },
-        { label: '创建人', prop: 'creator' },
-        { label: '创建时间', prop: 'createdAt' }
+        {label: '应用ID', prop: 'appId'},
+        {label: '应用名称', prop: 'appName'},
+        {label: '创建人', prop: 'creatorName'},
+        {label: '创建时间', prop: 'createdAt', formatter: tableFormatDate}
+      ],
+      tableOps: [
+        {command: 'EDIT', name: '编辑', handle: this.showEditDialog},
+        {command: 'DISABLE', name: '停用', handle: this.showEditDialog}
       ],
       dialog: false,
       dialogType: '新增',
       dialogForm: {
         appId: '',
-        appName: '',
-        monitor: '',
-        creator: ''
+        appName: ''
       }
     };
   },
   methods: {
-    showDetailDialog(data = {}) {
+    showDetailDialog (data = {}) {
       this.dialogForm = data;
       this.dialog = true;
     },
-    onCancelSubmit() {
+    onCancelSubmit () {
       this.dialog = false;
       this.dialogForm = {};
     },
-    onConfirmSubmit() {
-
+    async onConfirmSubmit () {
+      const response = await AppApplicationService.add(this.dialogForm)
+      if (response.code === 200) {
+        this.$message.success('添加成功')
+        this.onCancelSubmit()
+        this.$refs['table'].resetFilter()
+      }
+    },
+    showEditDialog (scope) {
+      console.log(scope)
     }
   }
 };

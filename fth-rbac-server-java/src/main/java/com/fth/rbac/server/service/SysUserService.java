@@ -6,6 +6,8 @@ import com.fth.rbac.server.core.entity.FrSysUser;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
 
+import java.util.List;
+
 /**
  * @author 冯天鹤
  * @version 1.0
@@ -22,4 +24,6 @@ public interface SysUserService {
     UserInfo selectInfoById(Integer userId);
 
     PaginationResponse<UserInfo> selectWithPagination(PaginationRequest request);
+
+    List<FrSysUser> selectByIds(List<Integer> userIds);
 }

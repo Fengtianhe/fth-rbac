@@ -1,19 +1,49 @@
 <template>
   <div class="table-container">
     <div class="table">
-      <el-table stripe>
+      <el-table stripe :data="tableData.lists">
         <el-table-column
-                v-for="col in columns"
-                :key="`${col.label}-${col.prop}`"
-                :label="col.label"
-                :prop="col.prop"
+            v-for="col in columns"
+            :key="`${col.label}-${col.prop}`"
+            :label="col.label"
+            :prop="col.prop"
+            :formatter="(row, column, cellValue) => formatterTableColumnValue(row, column, cellValue, col)"
         ></el-table-column>
+        <!--   插槽     -->
         <slot name="column"></slot>
+
+        <el-table-column label="操作" v-if="tableOps.length">
+          <template slot-scope="scope">
+            <el-dropdown @command="command => handleOpTableItem(command, scope)" size="mini">
+              <span class="el-dropdown-link">
+                <i class="el-icon-setting"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                    v-for="op in tableOps"
+                    :command="op.command"
+                    :key="op.command"
+                >{{op.name}}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
 
     <div class="pagination">
-      <el-pagination></el-pagination>
+      <div>共{{tableData.total}}条</div>
+      <el-pagination
+          style="margin-left: -10px"
+          background
+          @current-change="fetchWithPagination"
+          :current-page.sync="tableData.pageNumber"
+          :page-size="tableData.pageSize"
+          layout="prev, pager, next"
+          :total="tableData.total"
+      ></el-pagination>
+
     </div>
   </div>
 </template>
@@ -31,6 +61,12 @@ export default {
         return [];
       }
     },
+    tableOps: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
     url: {
       type: String,
       default: ''
@@ -43,7 +79,22 @@ export default {
       filterForm: {}
     };
   },
-  methods: {}
+  methods: {
+    formatterTableColumnValue (row, column, cellValue, dataitem) {
+      if (dataitem.formatter) {
+        return dataitem.formatter(row, column, cellValue)
+      }
+      return cellValue
+    },
+    handleOpTableItem (command, scope) {
+      const opMap = this.tableOps.reduce((res, item) => {
+        res[item.command] = item
+        return res
+      }, {})
+
+      opMap[command].handle && opMap[command].handle(scope)
+    }
+  }
 };
 </script>
 

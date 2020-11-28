@@ -73,7 +73,6 @@
 import $ from 'jquery';
 import { SysUserService } from '@web/service';
 import md5 from 'md5';
-import sysUser from '@web/service/modules/sysUser';
 
 export default {
   name: 'Login',
@@ -162,10 +161,11 @@ export default {
     width: 100%;
     height: 100%;
     background: url("../../../common/assets/images/bj.jpg");
+    overflow: hidden;
   }
 
   .header {
-    width: 1920px;
+    width: 100%;
     height: 180px;
   }
 
@@ -194,7 +194,7 @@ export default {
   }
 
   .center-container {
-    width: 1920px;
+    width: 100%;
     height: 464px;
   }
 
