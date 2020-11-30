@@ -2,7 +2,7 @@
   <div class="main">
     <div class="header box">
       <div class="header-container">
-        <div class="header-title">门神——基于资源的多平台权限管理系统</div>
+        <div class="header-title">基于资源的多平台权限管理系统</div>
         <div class="header-img"></div>
       </div>
     </div>

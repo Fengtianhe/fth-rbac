@@ -8,6 +8,10 @@ import Layout from '../views/layout/Layout';
 
 Vue.use(Router);
 
+/**
+ * hideQuickVisit 是否不在tag view中不追加
+ * @type {*[]}
+ */
 const routes = [
   {path: '/login', component: () => import('@web/views/login')},
   {path: '/404', component: () => import('@web/views/404')},
@@ -26,7 +30,18 @@ const routes = [
     redirect: '/application/user/list',
     children: [
       {path: 'app/list', name: '应用列表', component: () => import('@web/views/app/application/list')},
-      {path: 'resource/list', name: '应用资源', component: () => import('@web/views/app/resource/list')},
+      {
+        path: 'env/list',
+        name: '应用环境',
+        component: () => import('@web/views/app/env/list'),
+        meta: {hideQuickVisit: true}
+      },
+      {
+        path: 'resource/list',
+        name: '应用资源',
+        component: () => import('@web/views/app/resource/list'),
+        meta: {hideQuickVisit: true}
+      },
       {path: 'role/list', name: '应用角色', component: () => import('@web/views/dashboard')},
     ]
   },

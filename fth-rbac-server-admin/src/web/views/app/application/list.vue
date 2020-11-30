@@ -76,7 +76,8 @@ export default {
       tableOps: [
         {command: 'EDIT', name: '编辑', handle: this.showEditDialog},
         {command: 'DISABLE', name: '停用', handle: this.showEditDialog},
-        {command: 'CAT_RESOURCE', name: '查看资源', handle: this.toAppResource},
+        {command: 'ENV', name: '环境配置', handle: this.toAppEnv},
+        {command: 'RESOURCE', name: '查看资源', handle: this.toAppResource},
       ],
       dialog: false,
       dialogType: '新增',
@@ -105,6 +106,9 @@ export default {
     },
     showEditDialog (scope) {
       console.log(scope)
+    },
+    toAppEnv (scope) {
+      this.$router.push({path: '/application/env/list', query: {appId: scope.row.appId}})
     },
     toAppResource (scope) {
       this.$router.push({path: '/application/resource/list', query: {appId: scope.row.appId}})

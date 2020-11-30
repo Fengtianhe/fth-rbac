@@ -11,6 +11,7 @@ import com.fth.rbac.server.core.mapper.FrAppApplicationMapper;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
 import com.fth.rbac.server.service.AppApplicationService;
+import com.fth.rbac.server.service.AppEnvService;
 import com.fth.rbac.server.service.SysUserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +38,18 @@ public class AppApplicationServiceImpl implements AppApplicationService {
     private FrAppApplicationMapper frAppApplicationMapper;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private AppEnvService appEnvService;
 
     @Override
     public PaginationResponse<FrAppApplicationVo> selectWithPagination(PaginationRequest request) {
         Page page = PageHelper.startPage(request.getPageNumber(), request.getPageSize());
         FrAppApplicationExample example = new FrAppApplicationExample();
         List<FrAppApplication> frAppApplications = frAppApplicationMapper.selectByExample(example);
+
+        if (CollectionUtils.isEmpty(frAppApplications)) {
+            return new PaginationResponse<>(Collections.EMPTY_LIST, page);
+        }
 
         List<Integer> userIds = frAppApplications.stream().map(FrAppApplication::getCreator).collect(Collectors.toList());
         List<FrSysUser> users = sysUserService.selectByIds(userIds);
@@ -77,6 +85,9 @@ public class AppApplicationServiceImpl implements AppApplicationService {
         saveData.setCreatedAt(new Date());
 
         frAppApplicationMapper.insertSelective(saveData);
+
+        // 在创建应用的时候默认会创建三个环境dev,stg,prd
+        appEnvService.createDefaultEnv(appId);
     }
 
     @Override

@@ -8,6 +8,9 @@ const tagsView = {
       // state.visitedViews.push(Object.assign({}, view, {
       //   title: view.name || 'no-name'
       // }));
+      if (view.meta && view.meta.hideQuickVisit) {
+        return;
+      }
       state.visitedViews.push({ path: view.path, title: view.name || 'no-name' });
     },
     DEL_VISITED_VIEWS: (state, view) => {
