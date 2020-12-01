@@ -43,4 +43,5 @@ export default {
 
 <style lang="less">
   @import "../common/assets/style/base/_base.css";
+  @import "../common/assets/iconfont/iconfont.css";
 </style>

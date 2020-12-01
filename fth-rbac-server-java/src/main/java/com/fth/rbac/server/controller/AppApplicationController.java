@@ -9,6 +9,7 @@ import com.fth.rbac.server.core.utils.common.CommonResponse;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
 import com.fth.rbac.server.service.AppApplicationService;
+import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,9 @@ public class AppApplicationController extends BaseController {
 
     @ApiOperation("应用列表")
     @GetMapping("/all")
-    public CommonResponse<List<FrAppApplication>> all() {
-        List<FrAppApplication> pageResponse = appApplicationService.selectAll();
+    public CommonResponse<List<FrAppApplication>> all(HttpServletRequest request) {
+        Integer userId = SecurityHelper.userId(request);
+        List<FrAppApplication> pageResponse = appApplicationService.selectAll(userId);
         return CommonResponse.withSuccessResp(pageResponse);
     }
 

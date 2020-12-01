@@ -12,6 +12,7 @@ import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
 import com.fth.rbac.server.service.AppApplicationService;
 import com.fth.rbac.server.service.AppEnvService;
+import com.fth.rbac.server.service.AppRoleService;
 import com.fth.rbac.server.service.SysUserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -40,6 +41,8 @@ public class AppApplicationServiceImpl implements AppApplicationService {
     private SysUserService sysUserService;
     @Autowired
     private AppEnvService appEnvService;
+    @Autowired
+    private AppRoleService appRoleService;
 
     @Override
     public PaginationResponse<FrAppApplicationVo> selectWithPagination(PaginationRequest request) {
@@ -67,8 +70,11 @@ public class AppApplicationServiceImpl implements AppApplicationService {
     }
 
     @Override
-    public List<FrAppApplication> selectAll() {
-        return new ArrayList<>();
+    public List<FrAppApplication> selectAll(Integer userId) {
+        FrAppApplicationExample example = new FrAppApplicationExample();
+        example.createCriteria().andCreatorEqualTo(userId);
+        List<FrAppApplication> frAppApplications = frAppApplicationMapper.selectByExample(example);
+        return frAppApplications;
     }
 
     @Override
@@ -88,6 +94,8 @@ public class AppApplicationServiceImpl implements AppApplicationService {
 
         // 在创建应用的时候默认会创建三个环境dev,stg,prd
         appEnvService.createDefaultEnv(appId);
+        // 创建一个默认角色
+        appRoleService.createDefaultRole(appId);
     }
 
     @Override

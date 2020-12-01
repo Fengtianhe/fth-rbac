@@ -9,5 +9,11 @@ export default {
    * @param params
    * @returns {Promise<AxiosResponse<T>>}
    */
-  add: params => service.post('/api/app/application', params)
+  add: params => service.post('/api/app/application', params),
+
+  /**
+   * 所有有权限的应用
+   * @returns {Promise<AxiosResponse<T>>}
+   */
+  all: () => service.get('/api/app/application/all')
 }

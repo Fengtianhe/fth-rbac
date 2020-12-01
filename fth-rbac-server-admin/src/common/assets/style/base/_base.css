@@ -19,6 +19,10 @@ body {
     height: 100%;
 }
 
+a {
+    text-decoration: none;
+}
+
 .right,
 .r {
     float: right !important;

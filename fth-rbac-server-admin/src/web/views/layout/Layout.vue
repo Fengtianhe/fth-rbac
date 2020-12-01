@@ -36,7 +36,6 @@ export default {
 
     .sidebar-container {
       flex: 0 0 180px;
-      background-color: rgb(48, 65, 86);
     }
 
     .main-container {

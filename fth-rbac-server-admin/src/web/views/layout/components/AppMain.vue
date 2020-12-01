@@ -13,5 +13,7 @@ export default {
 };
 </script>
 <style scoped>
-
+  .app-main {
+    overflow: hidden;
+  }
 </style>

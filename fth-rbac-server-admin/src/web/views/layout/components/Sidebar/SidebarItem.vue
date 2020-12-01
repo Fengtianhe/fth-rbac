@@ -2,15 +2,15 @@
   <div class="menu-wrapper">
     <router-link v-if="!item.children || !item.children.length" :to="resolvePath(item.path)">
       <el-menu-item :index="resolvePath(item.path)" :class="{'submenu-title-noDropdown':!isNest}">
-        <i v-if="item.icon" class="item.icon"></i>
-        <span slot="title">{{ item.name }}</span>
+        <span v-if="item.meta && item.meta.iconCls" :class="item.meta.iconCls"></span>
+        <span slot="title" class="title">{{ item.name }}</span>
       </el-menu-item>
     </router-link>
 
     <el-submenu v-else :index="item.name || item.path">
       <template slot="title">
-        <i v-if="item.icon" class="item.icon"></i>
-        <span slot="title">{{ item.name }}</span>
+        <span v-if="item.meta && item.meta.iconCls" :class="item.meta.iconCls"></span>
+        <span slot="title" class="title">{{ item.name }}</span>
       </template>
 
       <template v-for="child in item.children">
@@ -25,7 +25,7 @@
         <router-link v-else :to="resolvePath(child.path)" :key="child.name">
           <el-menu-item :index="resolvePath(child.path)">
             <i v-if="child.icon" class="child.icon"></i>
-            <span slot="title">{{ child.name }}</span>
+            <span slot="title" class="title">{{ child.name }}</span>
           </el-menu-item>
         </router-link>
       </template>
@@ -61,7 +61,7 @@ export default {
   methods: {
     hasOneShowingChild(children) {
       const showingChildren = children.filter(item => {
-        if (item.hidden) {
+        if (item.inMenu) {
           return false;
         } else {
           // temp set(will be used if only has one showing child )
@@ -82,4 +82,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .title {
+    margin-left: 10px;
+  }
 </style>

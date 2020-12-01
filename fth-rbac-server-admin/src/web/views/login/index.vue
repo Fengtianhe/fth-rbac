@@ -124,17 +124,20 @@ export default {
     async handleLogin() {
       this.loginForm.password = md5(this.loginForm.password);
       this.loading = true;
-      const response = await SysUserService.login(this.loginForm);
-      if (response.code === 200) {
-        this.$store.commit('SET_TOKEN', response.data);
-        await SysUserService.info();
-        this.$store.commit('SET_MENUS');
-        this.$router.push({ path: '/' });
-      } else if (response.code === 604) {
-        this.getCode();
-        this.loginForm.captcha = '';
+      try {
+        const response = await SysUserService.login(this.loginForm);
+        if (response.code === 200) {
+          this.$store.commit('SET_TOKEN', response.data);
+          await SysUserService.info();
+          this.$store.commit('SET_MENUS');
+          this.$router.push({path: '/'});
+        } else if (response.code === 604) {
+          this.getCode();
+          this.loginForm.captcha = '';
+        }
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     }
   }
 };

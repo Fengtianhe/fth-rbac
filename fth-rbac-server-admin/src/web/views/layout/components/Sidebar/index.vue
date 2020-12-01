@@ -9,12 +9,12 @@
     <div class="scrollbar">
       <div class="scrollbar-scope">
         <el-menu
-                mode="vertical"
-                :show-timeout="200"
-                :default-active="$route.path"
-                background-color="#304156"
-                text-color="#bfcbd9"
-                active-text-color="#409EFF"
+            mode="vertical"
+            :show-timeout="200"
+            :default-active="$route.path"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
         >
           <sidebar-item v-for="route in menus" :key="route.name" :item="route" :base-path="route.path"></sidebar-item>
         </el-menu>
@@ -44,7 +44,7 @@ export default {
     flex-direction: column;
     width: 200px;
     overflow: hidden;
-
+    background: #545c64;
     .logo {
       line-height: 85px;
       text-align: center;

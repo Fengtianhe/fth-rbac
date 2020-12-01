@@ -6,7 +6,6 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import request from '@common/utils/request';
 import '@common/filter';
-
 import {TableMixinConfig} from 'element-table-mixin'
 
 TableMixinConfig.REQUEST = request

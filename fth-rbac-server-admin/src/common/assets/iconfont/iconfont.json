@@ -1,0 +1,58 @@
+{
+  "id": "2241544",
+  "name": "FTHRBAC",
+  "font_family": "iconfont",
+  "css_prefix_text": "fricon",
+  "description": "基于资源的多平台管理系统",
+  "glyphs": [
+    {
+      "icon_id": "13087852",
+      "name": "账户操作",
+      "font_class": "zhanghucaozuo",
+      "unicode": "e7c9",
+      "unicode_decimal": 59337
+    },
+    {
+      "icon_id": "13087865",
+      "name": "click",
+      "font_class": "click",
+      "unicode": "e7cd",
+      "unicode_decimal": 59341
+    },
+    {
+      "icon_id": "13442410",
+      "name": "robot",
+      "font_class": "robot",
+      "unicode": "e7da",
+      "unicode_decimal": 59354
+    },
+    {
+      "icon_id": "11474219",
+      "name": "all",
+      "font_class": "all",
+      "unicode": "e6ef",
+      "unicode_decimal": 59119
+    },
+    {
+      "icon_id": "11488154",
+      "name": "trading volume",
+      "font_class": "tradingvolume",
+      "unicode": "e76a",
+      "unicode_decimal": 59242
+    },
+    {
+      "icon_id": "11488171",
+      "name": "tool-hardware",
+      "font_class": "tool-hardware",
+      "unicode": "e76e",
+      "unicode_decimal": 59246
+    },
+    {
+      "icon_id": "11674090",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e7a7",
+      "unicode_decimal": 59303
+    }
+  ]
+}

@@ -16,12 +16,13 @@ import java.util.List;
 public interface AppApplicationService {
     /**
      * 分页查询
+     *
      * @param request 请求参数
      * @return
      */
     PaginationResponse<FrAppApplicationVo> selectWithPagination(PaginationRequest request);
 
-    List<FrAppApplication> selectAll();
+    List<FrAppApplication> selectAll(Integer userId);
 
     void add(SaveApplicationReq applicationReq, Integer userId);
 

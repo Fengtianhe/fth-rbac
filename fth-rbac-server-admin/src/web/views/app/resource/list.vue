@@ -1,16 +1,32 @@
 <template>
   <div class="container">
     <el-form size="mini" inline @submit.native.prevent>
-      <el-form-item label="资源名称：">
-        <el-input v-model="keywords" clearable @keyup.enter.native="onSearch()"></el-input>
+      <el-form-item>
+        <fr-select-application v-model="filterForm.appId"></fr-select-application>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSearch()">查询
+        <el-input
+            v-model="keywords"
+            placeholder="要搜索的资源名称"
+            clearable
+            @keyup.enter.native="onSearch()"
+            :disabled="!filterForm.appId"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+            type="primary"
+            @click="toCreateResource()"
+            icon="el-icon-plus"
+            :disabled="!filterForm.appId"
+        >新增资源
         </el-button>
-        <el-button type="primary" @click="toCreateResource()"
-                   icon="el-icon-plus">新增资源
+        <el-button
+            type="danger"
+            @click="resetSortFn"
+            :disabled="!filterForm.appId"
+        >恢复资源默认排序
         </el-button>
-        <el-button type="danger" @click="resetSortFn">恢复资源默认排序</el-button>
       </el-form-item>
     </el-form>
 
@@ -29,7 +45,7 @@
       <el-table-column prop="hidden" label="资源是否在菜单栏展示" align="center" width="160">
         <template slot-scope="scope">
           <el-switch v-if="scope.row.type == 1" :disabled="isResourceDisabled(scope.row)"
-                     @change="changeHidden(scope.row)" v-model="scope.row.hidden" active-color="#13ce66"
+                     @change="changeHidden(scope.row)" v-model="scope.row.inMenu" active-color="#13ce66"
                      inactive-color="#eee" :active-value="show" :inactive-value="hide">
           </el-switch>
         </template>
@@ -79,9 +95,11 @@
 import {AppResourceService} from '@/web/service';
 import StringHelper from '@/common/utils/StringHelper';
 import {ResourceMapping, MappingTools} from "@/common/mapping"
+import FrSelectApplication from "@web/components/FrSelectApplication";
 
 export default {
   name: 'AppResourceLists',
+  components: {FrSelectApplication},
   data () {
     return {
       loading: false,
@@ -92,14 +110,25 @@ export default {
         [ResourceMapping.type.page.value]: 'el-icon-tickets',
         [ResourceMapping.type.button.value]: 'el-icon-thumb'
       },
-      hide: ResourceMapping.hidden.hide.value,
-      show: ResourceMapping.hidden.show.value,
-      searchResource: []
+      hide: ResourceMapping.inMenu.hide.value,
+      show: ResourceMapping.inMenu.show.value,
+      searchResource: [],
+      filterForm: {
+        appId: ''
+      }
     };
   },
-  computed: {},
+  watch: {
+    'filterForm.appId': function (n) {
+      this.$router.push({path: this.$route.query.path, query: {appId: n}})
+      this.getAllResource()
+    }
+  },
   async created () {
-    await this.getAllResource();
+    if (this.$route.query.appId) {
+      this.filterForm.appId = this.$route.query.appId
+      await this.getAllResource();
+    }
   },
   methods: {
     // 更新资源排序
@@ -131,8 +160,8 @@ export default {
       return MappingTools.ValueEqMapping(ResourceMapping.type.button, type)
     },
     async changeHidden (row) {
-      let bool = MappingTools.ValueEqMapping(ResourceMapping.hidden.hide, row.hidden)
-      const res = await AppResourceService.switchResource({id: row.id, hidden: bool})
+      let bool = MappingTools.ValueEqMapping(ResourceMapping.inMenu.hide, row.inMenu)
+      const res = await AppResourceService.switchResource({id: row.id, inMenu: bool})
       if (res.code === 200) {
         this.getAllResource()
       }
@@ -200,7 +229,7 @@ export default {
       });
     },
     toCreateResource () {
-      this.$router.push({path: '/system/resource/create'});
+      this.$router.push({path: '/application/resource/create', query: {appId: this.filterForm.appId}});
     },
     toEdit (row) {
       this.$router.push({

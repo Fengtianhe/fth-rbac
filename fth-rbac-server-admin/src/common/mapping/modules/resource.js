@@ -1,12 +1,12 @@
 export default {
-  hidden: {
+  inMenu: {
     show: {
       label: '显示',
-      value: 0
+      value: 1
     },
     hide: {
       label: '隐藏',
-      value: 1
+      value: 0
     }
   },
   type: {

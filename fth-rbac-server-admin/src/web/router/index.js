@@ -20,7 +20,7 @@ const routes = [
     component: Layout,
     redirect: '/dashboard/index',
     children: [
-      {path: '/dashboard/index', name: '主页', component: () => import('@web/views/dashboard')},
+      {path: '/dashboard/index', name: '首页', component: () => import('@web/views/dashboard')},
     ]
   },
   {
@@ -33,16 +33,24 @@ const routes = [
       {
         path: 'env/list',
         name: '应用环境',
-        component: () => import('@web/views/app/env/list'),
-        meta: {hideQuickVisit: true}
+        component: () => import('@web/views/app/env/list')
       },
       {
         path: 'resource/list',
         name: '应用资源',
-        component: () => import('@web/views/app/resource/list'),
+        component: () => import('@web/views/app/resource/list')
+      },
+      {
+        path: 'resource/create',
+        name: '添加资源',
+        component: () => import('@web/views/app/resource/create'),
         meta: {hideQuickVisit: true}
       },
-      {path: 'role/list', name: '应用角色', component: () => import('@web/views/dashboard')},
+      {
+        path: 'role/list',
+        name: '应用角色',
+        component: () => import('@web/views/app/role/list')
+      },
     ]
   },
   {
