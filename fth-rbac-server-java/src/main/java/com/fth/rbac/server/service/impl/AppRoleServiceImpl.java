@@ -2,6 +2,7 @@ package com.fth.rbac.server.service.impl;
 
 import com.fth.rbac.server.core.entity.FrAppRole;
 import com.fth.rbac.server.core.entity.FrAppRoleResource;
+import com.fth.rbac.server.core.entity.FrAppRoleResourceExample;
 import com.fth.rbac.server.core.mapper.FrAppRoleMapper;
 import com.fth.rbac.server.core.mapper.FrAppRoleResourceMapper;
 import com.fth.rbac.server.service.AppRoleService;
@@ -45,6 +46,13 @@ public class AppRoleServiceImpl implements AppRoleService {
         saveData.setResourceId(resourceId);
 
         frAppRoleResourceMapper.insertSelective(saveData);
+    }
+
+    @Override
+    public void deleteByResourceId(String resId) {
+        FrAppRoleResourceExample example = new FrAppRoleResourceExample();
+        example.createCriteria().andResourceIdEqualTo(resId);
+        frAppRoleResourceMapper.deleteByExample(example);
     }
 
     public String getAdminId(String appId) {

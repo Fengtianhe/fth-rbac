@@ -20,4 +20,11 @@ public interface AppRoleService {
      * @param resourceId
      */
     void assignDefaultResource(String appId, String resourceId);
+
+    /**
+     * 删除资源关联的数据
+     *
+     * @param resId
+     */
+    void deleteByResourceId(String resId);
 }

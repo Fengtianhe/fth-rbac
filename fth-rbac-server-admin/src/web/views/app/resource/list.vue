@@ -123,7 +123,14 @@
                   type="success"
           >启用
           </el-button>
-          <el-button slot="reference" type="danger" size="mini" plain>删除</el-button>
+          <el-button
+              slot="reference"
+              type="danger"
+              size="mini"
+              plain
+              @click="delFn(scope.row.id)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -187,9 +194,12 @@ export default {
       }
     },
     async delFn(id) {
-      const res = await AppResourceService.delRrsource(id);
-      if (res.code === 200) {
-        this.getAllResource();
+      const confirm = await this.$confirm("确定删除资源？此操作不可逆。")
+      if (confirm === 'confirm') {
+        const res = await AppResourceService.delete(id);
+        if (res.code === 200) {
+          this.getAllResource();
+        }
       }
     },
     getStatusDes(status) {

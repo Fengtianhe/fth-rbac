@@ -156,7 +156,9 @@ public class AppResourceServiceImpl implements AppResourceService {
         subList = this.querySubList(subList);
 
         for (FrAppResource frAppResource : subList) {
-            appResourceMapper.deleteByPrimaryKey(frAppResource.getId());
+            String resId = frAppResource.getId();
+            appResourceMapper.deleteByPrimaryKey(resId);
+            appRoleService.deleteByResourceId(resId);
         }
     }
 

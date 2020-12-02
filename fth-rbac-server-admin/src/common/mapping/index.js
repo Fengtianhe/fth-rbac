@@ -1,4 +1,5 @@
 import ResourceMapping from './modules/resource'
+import ApplicationMapping from './modules/application'
 
 const MappingTools = {
   // 根据值获取label
@@ -48,5 +49,6 @@ const MappingTools = {
 
 export {
   ResourceMapping,
+  ApplicationMapping,
   MappingTools
 };

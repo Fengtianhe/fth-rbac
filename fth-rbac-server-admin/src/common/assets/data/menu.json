@@ -35,15 +35,10 @@
     }
   },
   {
-    "name": "系统管理",
+    "name": "用户管理",
+    "path": "/system/user/list",
     "meta": {
       "iconCls": "iconfont fricontool-hardware"
-    },
-    "children": [
-      {
-        "name": "用户管理",
-        "path": "/system/user/list"
-      }
-    ]
+    }
   }
 ]

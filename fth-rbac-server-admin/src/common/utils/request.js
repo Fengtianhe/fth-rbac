@@ -29,7 +29,6 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(response => {
     const res = response.data;
-    console.log(res);
     if (res.code === 200 || res.code === 0) {
       return res;
     }

@@ -8,10 +8,10 @@
         <el-form-item label="资源类型:" prop="type">
           <el-select v-model="formData.type">
             <el-option
-                    v-for="type in typeOptions"
-                    :key="type.value"
-                    :value="type.value"
-                    :label="type.label"
+                v-for="type in typeOptions"
+                :key="type.value"
+                :value="type.value"
+                :label="type.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -22,11 +22,11 @@
         </el-form-item>
         <el-form-item label="父级ID:">
           <el-cascader
-                  v-model="formData.parentId"
-                  style="width: 100%"
-                  :options="parentIdTree"
-                  :props="treeProps"
-                  @change="value => handlerParentId(value)"
+              v-model="formData.parentId"
+              style="width: 100%"
+              :options="parentIdTree"
+              :props="treeProps"
+              @change="value => handlerParentId(value)"
           ></el-cascader>
         </el-form-item>
         <el-form-item label="Icon Class:" prop="icon" v-if="!isButton">
@@ -46,8 +46,8 @@
 
 <script>
 
-import { MappingTools, ResourceMapping } from '@/common/mapping';
-import { AppResourceService } from '@web/service';
+import {MappingTools, ResourceMapping} from '@/common/mapping';
+import {AppResourceService} from '@web/service';
 
 export default {
   name: 'create',
@@ -60,7 +60,7 @@ export default {
       return isButton;
     }
   },
-  data() {
+  data () {
     const self = this;
     return {
       initialization: true,
@@ -141,7 +141,7 @@ export default {
       },
     };
   },
-  async created() {
+  async created () {
     await this.getTreeListFn();
     await this.getById();
   },
@@ -152,12 +152,12 @@ export default {
     }
   },
   methods: {
-    handlerParentId(value) {
+    handlerParentId (value) {
       if (value && value.length) {
         this.formData.parentId = value[value.length - 1];
       }
     },
-    async getTreeListFn() {
+    async getTreeListFn () {
       const res = await AppResourceService.treeAll({
         type: ResourceMapping.type.page.value,
         appId: this.$route.query.appId
@@ -166,7 +166,7 @@ export default {
         this.parentIdTree = res.data;
       }
     },
-    async getById() {
+    async getById () {
       if (this.$route.query.id) {
         const response = await AppResourceService.getById(this.$route.query.id);
         if (response.code === 0) {
@@ -178,36 +178,22 @@ export default {
       }
       this.initialization = false;
     },
-    async onSubmit() {
+    async onSubmit () {
       const that = this;
       this.$refs.form.validate(async valid => {
         if (valid) {
-          let response = {};
-          if (this.$route.query.id) {
-            response = await AppResourceService.updateResource({
-              id: this.$route.query.id,
-              name: this.formData.name,
-              pageUrl: this.formData.pageUrl,
-              type: this.formData.type,
-              icon: this.formData.icon,
-              parentId: this.formData.parentId || '0',
-              inMenu: this.formData.inMenu,
-            });
-            this.$message.success('修改成功');
-          } else {
-            response = await AppResourceService.save({
-              resourceName: this.formData.name,
-              pageUrl: this.formData.pageUrl,
-              parentId: this.formData.parentId || '0',
-              type: this.formData.type,
-              appId: this.$route.query.appId,
-              inMenu: this.formData.inMenu
-            });
+          let response = await AppResourceService.save({
+            resourceName: this.formData.name,
+            pageUrl: this.formData.pageUrl,
+            parentId: this.formData.parentId || '0',
+            type: this.formData.type,
+            appId: this.$route.query.appId,
+            inMenu: this.formData.inMenu
+          });
 
-            this.$alert(`新增资源成功，ID；${response.data}`).then(() => {
-              that.$router.back();
-            });
-          }
+          this.$alert(`新增资源成功，ID；${response.data}`).then(() => {
+            that.$router.back();
+          });
         }
       });
     }
