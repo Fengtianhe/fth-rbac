@@ -11,7 +11,7 @@ import net.sf.oval.constraint.NotNull;
  * @author fengtianhe
  */
 @Data
-public class SaveResourceReq {
+public class ResourceSaveReq {
     @ApiModelProperty("资源名称")
     @NotEmpty
     @NotNull

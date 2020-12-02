@@ -14,13 +14,6 @@
     }
   },
   {
-    "name": "环境管理",
-    "path": "/application/env/list",
-    "meta": {
-      "iconCls": "iconfont friconrobot"
-    }
-  },
-  {
     "name": "资源管理",
     "path": "/application/resource/list",
     "meta": {
