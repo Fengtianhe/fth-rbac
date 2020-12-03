@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../../../../common/assets/style/base/variable";
+  @import "../../../common/assets/style/base/variable";
 
   .page {
     display: flex;

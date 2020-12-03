@@ -2,16 +2,19 @@
   <div class="container">
     <div class="form">
       <el-form size="mini" label-width="120px" :model="formData" :rules="formRule" ref="form">
-        <el-form-item label="资源名称:" prop="name">
-          <el-input v-model="formData.name" maxlength="50" clearable show-word-limit></el-input>
+        <el-form-item label="资源ID:">
+          <el-input :value="formData.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="资源名称:" prop="resourceName">
+          <el-input v-model="formData.resourceName"></el-input>
         </el-form-item>
         <el-form-item label="资源类型:" prop="type">
-          <el-select v-model="formData.type">
+          <el-select v-model="formData.type" disabled>
             <el-option
-                v-for="type in typeOptions"
-                :key="type.value"
-                :value="type.value"
-                :label="type.label"
+                    v-for="type in typeOptions"
+                    :key="type.value"
+                    :value="type.value"
+                    :label="type.label"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -22,11 +25,12 @@
         </el-form-item>
         <el-form-item label="父级ID:">
           <el-cascader
-              v-model="formData.parentId"
-              style="width: 100%"
-              :options="parentIdTree"
-              :props="treeProps"
-              @change="value => handlerParentId(value)"
+                  v-model="formData.parentId"
+                  style="width: 100%"
+                  :options="parentIdTree"
+                  :props="treeProps"
+                  :disabled="isButton"
+                  @change="value => handlerParentId(value)"
           ></el-cascader>
         </el-form-item>
         <el-form-item label="Icon Class:" prop="icon" v-if="!isButton">
@@ -36,7 +40,7 @@
           <el-input v-model="formData.pageUrl"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="goBack()">取消</el-button>
+          <el-button @click="$router.back()">取消</el-button>
           <el-button type="primary" @click="onSubmit()">确认</el-button>
         </el-form-item>
       </el-form>
@@ -46,8 +50,8 @@
 
 <script>
 
-import {MappingTools, ResourceMapping} from '@/common/mapping';
-import {AppResourceService} from '@web/service';
+import { MappingTools, ResourceMapping } from '@common/mapping';
+import { AppResourceService } from '@web/service';
 
 export default {
   name: 'create',
@@ -60,13 +64,13 @@ export default {
       return isButton;
     }
   },
-  data () {
+  data() {
     const self = this;
     return {
       initialization: true,
       formData: {
         inMenu: ResourceMapping.inMenu.show.value,
-        name: '',
+        resourceName: '',
         type: ResourceMapping.type.page.value,
         parentId: '',
         menu: '',
@@ -77,17 +81,10 @@ export default {
       },
       inMenuOptions: MappingTools.TransferOptions(ResourceMapping.inMenu),
       formRule: {
-        name: [
+        resourceName: [
           {
             required: true,
             message: '请输入资源名称',
-            trigger: ['trigger', 'change', 'blur']
-          }
-        ],
-        type: [
-          {
-            required: true,
-            message: '请选择资源类型',
             trigger: ['trigger', 'change', 'blur']
           }
         ],
@@ -141,23 +138,17 @@ export default {
       },
     };
   },
-  async created () {
+  async created() {
     await this.getTreeListFn();
     await this.getById();
   },
-  watch: {
-    isButton: function (n) {
-      console.log('is button = ', n);
-      this.treeProps.checkStrictly = !n;
-    }
-  },
   methods: {
-    handlerParentId (value) {
+    handlerParentId(value) {
       if (value && value.length) {
         this.formData.parentId = value[value.length - 1];
       }
     },
-    async getTreeListFn () {
+    async getTreeListFn() {
       const res = await AppResourceService.treeAll({
         type: ResourceMapping.type.page.value,
         appId: this.$route.query.appId
@@ -166,10 +157,10 @@ export default {
         this.parentIdTree = res.data;
       }
     },
-    async getById () {
-      if (this.$route.query.id) {
-        const response = await AppResourceService.getById(this.$route.query.id);
-        if (response.code === 0) {
+    async getById() {
+      if (this.$route.query.resourceId) {
+        const response = await AppResourceService.getById(this.$route.query.resourceId);
+        if (response.code === 200) {
           this.formData = {
             ...this.formData,
             ...response.data
@@ -178,22 +169,21 @@ export default {
       }
       this.initialization = false;
     },
-    async onSubmit () {
-      const that = this;
+    async onSubmit() {
       this.$refs.form.validate(async valid => {
         if (valid) {
-          let response = await AppResourceService.save({
-            resourceName: this.formData.name,
-            pageUrl: this.formData.pageUrl,
-            parentId: this.formData.parentId || '0',
-            type: this.formData.type,
-            appId: this.$route.query.appId,
-            inMenu: this.formData.inMenu
-          });
-
-          this.$alert(`新增资源成功，ID；${response.data}`).then(() => {
-            that.$router.back();
-          });
+          if (this.$route.query.resourceId) {
+            await AppResourceService.update({
+              id: this.$route.query.resourceId,
+              name: this.formData.resourceName,
+              pageUrl: this.formData.pageUrl,
+              icon: this.formData.icon,
+              parentId: this.formData.parentId || '0',
+              inMenu: this.formData.inMenu,
+            });
+            this.$message.success('修改成功');
+            this.$router.back();
+          }
         }
       });
     }

@@ -139,9 +139,9 @@
 </template>
 
 <script>
-import { AppResourceService } from '@/web/service';
-import StringHelper from '@/common/utils/StringHelper';
-import { ResourceMapping, MappingTools } from '@/common/mapping';
+import { AppResourceService } from '@web/service';
+import StringHelper from '@common/utils/StringHelper';
+import { ResourceMapping, MappingTools } from '@common/mapping';
 import FrSelectApplication from '@web/components/FrSelectApplication';
 
 export default {

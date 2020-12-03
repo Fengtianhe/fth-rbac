@@ -29,33 +29,33 @@ const routes = [
     name: '应用管理',
     redirect: '/application/user/list',
     children: [
-      {path: 'app/list', name: '应用列表', component: () => import('@web/views/app/application/list')},
+      {path: 'app/list', name: '应用列表', component: () => import('@web/views/application/list')},
       {
         path: 'env/list',
         name: '应用环境',
-        component: () => import('@web/views/app/env/list')
+        component: () => import('@web/views/env/list')
       },
       {
         path: 'resource/list',
         name: '应用资源',
-        component: () => import('@web/views/app/resource/list')
+        component: () => import('@web/views/resource/list')
       },
       {
         path: 'resource/create',
         name: '添加资源',
-        component: () => import('@web/views/app/resource/create'),
+        component: () => import('@web/views/resource/create'),
         meta: {hideQuickVisit: true}
       },
       {
         path: 'resource/edit',
         name: '编辑资源',
-        component: () => import('@web/views/app/resource/edit'),
+        component: () => import('@web/views/resource/edit'),
         meta: {hideQuickVisit: true}
       },
       {
         path: 'role/list',
         name: '应用角色',
-        component: () => import('@web/views/app/role/list')
+        component: () => import('@web/views/role/list')
       },
     ]
   },
@@ -65,7 +65,7 @@ const routes = [
     name: '系统管理',
     redirect: '/application/user/list',
     children: [
-      {path: 'user/list', name: '用户管理', component: () => import('@web/views/sys/user/list')},
+      {path: 'user/list', name: '用户管理', component: () => import('@web/views/user/list')},
     ]
   },
   {path: '*', redirect: '/404'}
