@@ -1,13 +1,12 @@
 package com.fth.rbac.server.service.impl;
 
-import com.fth.rbac.server.controller.vo.FrAppVo;
+import com.fth.rbac.server.controller.vo.AppVo;
 import com.fth.rbac.server.controller.vo.SaveApplicationReq;
 import com.fth.rbac.server.core.entity.FrApp;
 import com.fth.rbac.server.core.entity.FrAppExample;
 import com.fth.rbac.server.core.entity.FrUser;
 import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
-import com.fth.rbac.server.core.mapper.FrAppMapper;
 import com.fth.rbac.server.core.mapper.FrAppMapper;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
@@ -46,7 +45,7 @@ public class AppServiceImpl implements AppService {
     private RoleService roleService;
 
     @Override
-    public PaginationResponse<FrAppVo> selectWithPagination(PaginationRequest request) {
+    public PaginationResponse<AppVo> selectWithPagination(PaginationRequest request) {
         Page page = PageHelper.startPage(request.getPageNumber(), request.getPageSize());
         FrAppExample example = new FrAppExample();
         List<FrApp> FrApps = FrAppMapper.selectByExample(example);
@@ -59,9 +58,9 @@ public class AppServiceImpl implements AppService {
         List<FrUser> users = userService.selectByIds(userIds);
         Map<Integer, String> userMap = users.stream().collect(Collectors.toMap(FrUser::getId, FrUser::getUsername));
 
-        List<FrAppVo> responseList = new ArrayList<>();
+        List<AppVo> responseList = new ArrayList<>();
         FrApps.forEach(app -> {
-            FrAppVo vo = new FrAppVo();
+            AppVo vo = new AppVo();
             BeanUtils.copyProperties(app, vo);
             vo.setCreatorName(userMap.get(app.getCreator()));
             responseList.add(vo);

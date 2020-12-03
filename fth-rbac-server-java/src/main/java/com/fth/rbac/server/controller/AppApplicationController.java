@@ -1,6 +1,6 @@
 package com.fth.rbac.server.controller;
 
-import com.fth.rbac.server.controller.vo.FrAppVo;
+import com.fth.rbac.server.controller.vo.AppVo;
 import com.fth.rbac.server.controller.vo.SaveApplicationReq;
 import com.fth.rbac.server.core.entity.FrApp;
 import com.fth.rbac.server.core.utils.SecurityHelper;
@@ -36,8 +36,8 @@ public class AppApplicationController extends BaseController {
 
     @ApiOperation("应用列表")
     @GetMapping("/list")
-    public CommonResponse<PaginationResponse<FrAppVo>> list(@ModelAttribute PaginationRequest request) {
-        PaginationResponse<FrAppVo> pageResponse = appAppService.selectWithPagination(request);
+    public CommonResponse<PaginationResponse<AppVo>> list(@ModelAttribute PaginationRequest request) {
+        PaginationResponse<AppVo> pageResponse = appAppService.selectWithPagination(request);
         return CommonResponse.withSuccessResp(pageResponse);
     }
 

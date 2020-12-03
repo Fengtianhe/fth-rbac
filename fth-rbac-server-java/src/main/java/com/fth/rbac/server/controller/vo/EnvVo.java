@@ -9,6 +9,6 @@ import lombok.Data;
  * @author fengtianhe
  */
 @Data
-public class FrEnvVo extends FrEnv {
+public class EnvVo extends FrEnv {
     private String creatorName;
 }

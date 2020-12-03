@@ -9,6 +9,6 @@ import lombok.Data;
  * @author fengtianhe
  */
 @Data
-public class FrAppVo extends FrApp {
+public class AppVo extends FrApp {
     private String creatorName;
 }

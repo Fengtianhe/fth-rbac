@@ -1,7 +1,6 @@
 package com.fth.rbac.server.service.impl;
 
-import com.fth.rbac.server.controller.vo.FrEnvVo;
-import com.fth.rbac.server.core.entity.FrApp;
+import com.fth.rbac.server.controller.vo.EnvVo;
 import com.fth.rbac.server.core.entity.FrEnv;
 import com.fth.rbac.server.core.entity.FrEnvExample;
 import com.fth.rbac.server.core.entity.FrUser;
@@ -40,7 +39,7 @@ public class EnvServiceImpl implements EnvService {
     }
 
     @Override
-    public List<FrEnvVo> selectByAppId(String appId) {
+    public List<EnvVo> selectByAppId(String appId) {
         FrEnvExample envExample = new FrEnvExample();
         envExample.createCriteria().andAppIdEqualTo(appId);
         List<FrEnv> FrEnvs = appEnvMapper.selectByExample(envExample);
@@ -53,9 +52,9 @@ public class EnvServiceImpl implements EnvService {
         List<FrUser> users = userService.selectByIds(userIds);
         Map<Integer, String> userMap = users.stream().collect(Collectors.toMap(FrUser::getId, FrUser::getUsername));
 
-        List<FrEnvVo> responseList = new ArrayList<>();
+        List<EnvVo> responseList = new ArrayList<>();
         FrEnvs.forEach(app -> {
-            FrEnvVo vo = new FrEnvVo();
+            EnvVo vo = new EnvVo();
             BeanUtils.copyProperties(app, vo);
             if (vo.getCreator() == 0) {
                 vo.setCreatorName("系统");

@@ -1,8 +1,6 @@
 package com.fth.rbac.server.controller;
 
-import com.fth.rbac.server.controller.vo.FrEnvVo;
-import com.fth.rbac.server.core.entity.FrApp;
-import com.fth.rbac.server.core.entity.FrEnv;
+import com.fth.rbac.server.controller.vo.EnvVo;
 import com.fth.rbac.server.core.utils.common.BaseController;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
 import com.fth.rbac.server.service.EnvService;
@@ -30,8 +28,8 @@ public class AppEnvController extends BaseController {
 
     @ApiOperation("通过应用查询")
     @GetMapping("/by-appid/{appId}")
-    public CommonResponse<List<FrEnvVo>> all(@PathVariable String appId) {
-        List<FrEnvVo> response = envService.selectByAppId(appId);
+    public CommonResponse<List<EnvVo>> all(@PathVariable String appId) {
+        List<EnvVo> response = envService.selectByAppId(appId);
         return CommonResponse.withSuccessResp(response);
     }
 }

@@ -1,6 +1,6 @@
 package com.fth.rbac.server.service;
 
-import com.fth.rbac.server.controller.vo.FrEnvVo;
+import com.fth.rbac.server.controller.vo.EnvVo;
 
 import java.util.List;
 
@@ -23,5 +23,5 @@ public interface EnvService {
      * @param appId
      * @return
      */
-    List<FrEnvVo> selectByAppId(String appId);
+    List<EnvVo> selectByAppId(String appId);
 }
