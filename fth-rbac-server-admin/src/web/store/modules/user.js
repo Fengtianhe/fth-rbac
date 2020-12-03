@@ -20,7 +20,7 @@ const user = {
     },
     SET_USER_INFO: async function (state) {
       if (state.token) {
-        const response = await service.get('/api/sys/user/info');
+        const response = await service.get('/api/user/info');
         state.info = response.data;
       } else {
         this.CLEAR_TOKEN(state);
@@ -52,7 +52,7 @@ const user = {
       if (!upt) {
         return;
       }
-      await service.put('/api/sys/user', uptData);
+      await service.put('/api/user', uptData);
       commit('SET_USER_INFO');
     }
   }

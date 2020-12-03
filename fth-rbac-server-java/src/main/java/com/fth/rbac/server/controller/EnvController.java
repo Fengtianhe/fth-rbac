@@ -21,8 +21,8 @@ import java.util.List;
  */
 @Api(tags = "应用管理-环境")
 @RestController
-@RequestMapping("/api/app/env")
-public class AppEnvController extends BaseController {
+@RequestMapping("/api/env")
+public class EnvController extends BaseController {
     @Autowired
     private EnvService envService;
 

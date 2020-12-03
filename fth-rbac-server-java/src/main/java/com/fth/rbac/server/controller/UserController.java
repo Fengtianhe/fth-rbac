@@ -32,8 +32,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Api(tags = "系统管理-用户")
 @RestController
-@RequestMapping("/api/sys/user")
-public class SysUserController {
+@RequestMapping("/api/user")
+public class UserController {
     @Autowired
     private UserService userService;
     @Autowired

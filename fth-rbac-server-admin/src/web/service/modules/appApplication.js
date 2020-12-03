@@ -1,5 +1,5 @@
 import service from '@/common/utils/request'
-const URL_APP_APPLICATION_LIST = '/api/app/application/list';
+const URL_APP_APPLICATION_LIST = '/api/app/list';
 
 export default {
   URL_APP_APPLICATION_LIST,
@@ -9,11 +9,11 @@ export default {
    * @param params
    * @returns {Promise<AxiosResponse<T>>}
    */
-  add: params => service.post('/api/app/application', params),
+  add: params => service.post('/api/app', params),
 
   /**
    * 所有有权限的应用
    * @returns {Promise<AxiosResponse<T>>}
    */
-  all: () => service.get('/api/app/application/all')
+  all: () => service.get('/api/app/all')
 }

@@ -21,8 +21,8 @@ import java.util.List;
  */
 @Api(tags = "应用管理-资源")
 @RestController
-@RequestMapping("/api/app/resource")
-public class AppResourceController extends BaseController {
+@RequestMapping("/api/resource")
+public class ResourceController extends BaseController {
     @Autowired
     private ResourceService resourceService;
 

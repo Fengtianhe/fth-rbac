@@ -1,7 +1,7 @@
 import service from '@common/utils/request';
 import store from '@web/store';
 
-const URL_SYS_USER_LIST = '/api/sys/user/list';
+const URL_SYS_USER_LIST = '/api/user/list';
 export default {
   URL_SYS_USER_LIST,
   /**
@@ -9,7 +9,7 @@ export default {
    * @param params
    * @returns {Promise<AxiosResponse<T>>}
    */
-  login: params => service.post(`/api/sys/user/login`, params),
+  login: params => service.post(`/api/user/login`, params),
 
   /**
    * 获取用户信息
@@ -21,5 +21,5 @@ export default {
    * 通过关键词查询用户列表
    * @returns {Promise<AxiosResponse<T>>}
    */
-  byKeywords: params => service.get('/api/sys/user/by-keywords', { params })
+  byKeywords: params => service.get('/api/user/by-keywords', { params })
 };

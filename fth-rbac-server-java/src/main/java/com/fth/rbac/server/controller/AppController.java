@@ -29,8 +29,8 @@ import java.util.List;
  */
 @Api(tags = "应用管理-应用")
 @RestController
-@RequestMapping("/api/app/application")
-public class AppApplicationController extends BaseController {
+@RequestMapping("/api/app")
+public class AppController extends BaseController {
     @Autowired
     private AppService appAppService;
 
