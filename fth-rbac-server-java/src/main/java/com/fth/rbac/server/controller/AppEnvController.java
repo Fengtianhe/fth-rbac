@@ -1,11 +1,11 @@
 package com.fth.rbac.server.controller;
 
-import com.fth.rbac.server.controller.vo.FrAppEnvVo;
-import com.fth.rbac.server.core.entity.FrAppApplication;
-import com.fth.rbac.server.core.entity.FrAppEnv;
+import com.fth.rbac.server.controller.vo.FrEnvVo;
+import com.fth.rbac.server.core.entity.FrApp;
+import com.fth.rbac.server.core.entity.FrEnv;
 import com.fth.rbac.server.core.utils.common.BaseController;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
-import com.fth.rbac.server.service.AppEnvService;
+import com.fth.rbac.server.service.EnvService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,12 @@ import java.util.List;
 @RequestMapping("/api/app/env")
 public class AppEnvController extends BaseController {
     @Autowired
-    private AppEnvService envService;
+    private EnvService envService;
 
     @ApiOperation("通过应用查询")
     @GetMapping("/by-appid/{appId}")
-    public CommonResponse<List<FrAppEnvVo>> all(@PathVariable String appId) {
-        List<FrAppEnvVo> response = envService.selectByAppId(appId);
+    public CommonResponse<List<FrEnvVo>> all(@PathVariable String appId) {
+        List<FrEnvVo> response = envService.selectByAppId(appId);
         return CommonResponse.withSuccessResp(response);
     }
 }

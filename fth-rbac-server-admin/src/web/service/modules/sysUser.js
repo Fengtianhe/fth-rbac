@@ -15,5 +15,11 @@ export default {
    * 获取用户信息
    * @param params
    */
-  info: () => store.commit('SET_USER_INFO')
+  info: () => store.commit('SET_USER_INFO'),
+
+  /**
+   * 通过关键词查询用户列表
+   * @returns {Promise<AxiosResponse<T>>}
+   */
+  byKeywords: params => service.get('/api/sys/user/by-keywords', { params })
 };

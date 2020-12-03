@@ -3,6 +3,7 @@ package com.fth.rbac.server.controller;
 import com.fth.rbac.server.aop.PassToken;
 import com.fth.rbac.server.controller.vo.LoginReq;
 import com.fth.rbac.server.controller.vo.UserInfo;
+import com.fth.rbac.server.controller.vo.UserUpdateReq;
 import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.utils.SecurityHelper;
@@ -10,7 +11,7 @@ import com.fth.rbac.server.core.utils.common.CommonResponse;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
 import com.fth.rbac.server.core.utils.redis.RedisHelper;
-import com.fth.rbac.server.service.SysUserService;
+import com.fth.rbac.server.service.UserService;
 import com.wf.captcha.SpecCaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/api/sys/user")
 public class SysUserController {
     @Autowired
-    private SysUserService sysUserService;
+    private UserService userService;
     @Autowired
     private RedisHelper redisHelper;
 
@@ -42,7 +44,7 @@ public class SysUserController {
     @PassToken
     public CommonResponse login(@RequestBody LoginReq loginReq) {
         verifyCaptcha(loginReq.getUsername(), loginReq.getCaptcha());
-        String res = sysUserService.login(loginReq);
+        String res = userService.login(loginReq);
         return CommonResponse.withSuccessResp(res);
     }
 
@@ -50,8 +52,16 @@ public class SysUserController {
     @ApiOperation("当前用户信息")
     public CommonResponse info(HttpServletRequest request) {
         Integer userId = SecurityHelper.userId(request);
-        UserInfo userInfo = sysUserService.selectInfoById(userId);
+        UserInfo userInfo = userService.selectInfoById(userId);
         return CommonResponse.withSuccessResp(userInfo);
+    }
+
+    @PutMapping("")
+    @ApiOperation("更新用户信息")
+    public CommonResponse update(@RequestBody UserUpdateReq updateReq, HttpServletRequest request) {
+        Integer userId = SecurityHelper.userId(request);
+        userService.updateById(userId, updateReq);
+        return CommonResponse.withSuccessResp(true);
     }
 
     @GetMapping("/captcha")
@@ -70,8 +80,15 @@ public class SysUserController {
     @GetMapping("/list")
     @ApiOperation("用户列表")
     public CommonResponse<PaginationResponse<UserInfo>> list(@RequestParam PaginationRequest request) {
-        PaginationResponse<UserInfo> lists = sysUserService.selectWithPagination(request);
+        PaginationResponse<UserInfo> lists = userService.selectWithPagination(request);
         return CommonResponse.withSuccessResp(lists);
+    }
+
+    @GetMapping("/by-keywords")
+    @ApiOperation("通过关键词查询")
+    public CommonResponse<List<UserInfo>> queryByKeywords(@RequestParam String keywords){
+        List<UserInfo> users = userService.queryByKeywords(keywords);
+        return CommonResponse.withSuccessResp(users);
     }
 
     private void verifyCaptcha(String username, String captcha) {

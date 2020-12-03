@@ -4,24 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fth.rbac.server.aop.token.TokenManager;
 import com.fth.rbac.server.aop.token.TokenModel;
-import com.fth.rbac.server.core.entity.FrSysUser;
-import com.fth.rbac.server.core.enums.SysUserStatusEnum;
-import com.fth.rbac.server.core.enums.base.EnumFactory;
+import com.fth.rbac.server.core.entity.FrUser;
 import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
-import com.fth.rbac.server.core.utils.common.ResponseConstant;
-import com.fth.rbac.server.core.utils.date.DatePattern;
-import com.fth.rbac.server.core.utils.redis.RedisHelper;
-import com.fth.rbac.server.service.SysUserService;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -30,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -9,7 +9,7 @@
           <el-input v-model="filterForm.appName"></el-input>
         </el-form-item>
         <el-form-item label="创建人">
-          <el-input v-model="filterForm.creator"></el-input>
+          <fr-search-user v-model="filterForm.creator"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="$refs['table'].setFilter()">查询</el-button>
@@ -20,28 +20,28 @@
     </div>
 
     <table-container
-        :url='tableDataUrl'
-        style="flex:1"
-        :columns="tableColumns"
-        ref="table">
+            :url='tableDataUrl'
+            style="flex:1"
+            :columns="tableColumns"
+            ref="table">
       <template slot="column">
         <el-table-column label="操作" width="180px">
           <template slot-scope="scope">
             <el-button size="mini" @click="showEditDialog(scope)" type="primary" plain>编辑</el-button>
             <el-button
-                size="mini"
-                @click="disableApp(scope)"
-                type="danger"
-                plain
-                v-if="isAppEnabled(scope)"
+                    size="mini"
+                    @click="disableApp(scope)"
+                    type="danger"
+                    plain
+                    v-if="isAppEnabled(scope)"
             >停用
             </el-button>
             <el-button
-                size="mini"
-                @click="enableApp(scope)"
-                type="success"
-                plain
-                v-if="isAppDisabled(scope)"
+                    size="mini"
+                    @click="enableApp(scope)"
+                    type="success"
+                    plain
+                    v-if="isAppDisabled(scope)"
             >启用
             </el-button>
           </template>
@@ -54,10 +54,22 @@
 
       <el-form label-width="80px">
         <el-form-item label="应用ID" required>
-          <el-input v-model="dialogForm.appId"></el-input>
+          <el-input v-model="dialogForm.appId" :disabled="dialogType!=='新增'"></el-input>
         </el-form-item>
         <el-form-item label="应用名称" required>
           <el-input v-model="dialogForm.appName"></el-input>
+        </el-form-item>
+        <el-form-item label="负责人">
+          <fr-search-user @select="onSelectDeveloper" :clear-on-select="true"/>
+          <br>
+          <el-tag
+                  v-for="(developer, idx) in dialogForm.developers"
+                  :key="developer.id"
+                  closable
+                  @close="onRemoveDeveloper(idx)"
+          >
+            {{developer.nickname || developer.username}}
+          </el-tag>
         </el-form-item>
       </el-form>
 
@@ -71,15 +83,16 @@
 
 <script>
 
-import {TableContainer} from 'element-table-mixin';
-import {AppApplicationService} from '@web/service';
-import {tableFormatDate} from '@common/utils/table';
-import {ApplicationMapping, MappingTools} from "@common/mapping";
+import { TableContainer } from 'element-table-mixin';
+import { AppApplicationService } from '@web/service';
+import { tableFormatDate } from '@common/utils/table';
+import { ApplicationMapping, MappingTools } from '@common/mapping';
+import FrSearchUser from '@web/components/FrSearchUser';
 
 export default {
   name: 'list',
-  components: {TableContainer},
-  data () {
+  components: { FrSearchUser, TableContainer },
+  data() {
     return {
       tableDataUrl: AppApplicationService.URL_APP_APPLICATION_LIST,
       filterForm: {
@@ -88,49 +101,68 @@ export default {
         creator: ''
       },
       tableColumns: [
-        {label: '应用ID', prop: 'appId'},
-        {label: '应用名称', prop: 'appName'},
-        {label: '状态', prop: 'status', formatter: this.matchAppStatus},
-        {label: '负责人', prop: ''},
-        {label: '创建人', prop: 'creatorName'},
-        {label: '创建时间', prop: 'createdAt', align: 'center', width: '130px', formatter: tableFormatDate}
+        { label: '应用ID', prop: 'appId' },
+        { label: '应用名称', prop: 'appName' },
+        { label: '状态', prop: 'status', formatter: this.matchAppStatus },
+        { label: '负责人', prop: '' },
+        { label: '创建人', prop: 'creatorName' },
+        { label: '创建时间', prop: 'createdAt', align: 'center', width: '130px', formatter: tableFormatDate }
       ],
       dialog: false,
       dialogType: '新增',
       dialogForm: {
         appId: '',
-        appName: ''
+        appName: '',
+        developers: []
       }
     };
   },
   methods: {
-    showDetailDialog (data = {}) {
+    showDetailDialog(data = {}) {
       this.dialogForm = data;
       this.dialog = true;
     },
-    onCancelSubmit () {
+    onCancelSubmit() {
       this.dialog = false;
       this.dialogForm = {};
     },
-    async onConfirmSubmit () {
-      const response = await AppApplicationService.add(this.dialogForm);
-      if (response.code === 200) {
+    async onConfirmSubmit() {
+      if (this.dialogType === '编辑') {
+        await AppApplicationService.update(this.dialogForm);
+        this.$message.success('编辑成功');
+      } else {
+        await AppApplicationService.add(this.dialogForm);
         this.$message.success('添加成功');
-        this.onCancelSubmit();
-        this.$refs['table'].resetFilter();
+      }
+      this.onCancelSubmit();
+      this.$refs['table'].resetFilter();
+    },
+    showEditDialog(scope) {
+      this.dialog = true;
+      this.dialogType = '編輯';
+      this.dialogForm.appId = scope.row.appId;
+      this.dialogForm.appName = scope.row.appName;
+      this.dialogForm.developers = scope.row.developers || [];
+    },
+    onSelectDeveloper(user) {
+      const idx = this.dialogForm.developers.findIndex(u => user.id === u.id);
+      if (idx !== -1) {
+        this.$message.info('已存在该用户');
+      } else {
+        this.dialogForm.developers.push(user);
       }
     },
-    showEditDialog (scope) {
-      console.log(scope);
+    onRemoveDeveloper(idx) {
+      this.dialogForm.developers.splice(idx, 1);
     },
-    matchAppStatus (row, column, cellValue) {
-      return MappingTools.MatchLabel(ApplicationMapping.status, cellValue)
+    matchAppStatus(row, column, cellValue) {
+      return MappingTools.MatchLabel(ApplicationMapping.status, cellValue);
     },
-    isAppEnabled (scope) {
-      return MappingTools.ValueEqMapping(ApplicationMapping.status.enabled, scope.row.status)
+    isAppEnabled(scope) {
+      return MappingTools.ValueEqMapping(ApplicationMapping.status.enabled, scope.row.status);
     },
-    isAppDisabled (scope) {
-      return MappingTools.ValueEqMapping(ApplicationMapping.status.disabled, scope.row.status)
+    isAppDisabled(scope) {
+      return MappingTools.ValueEqMapping(ApplicationMapping.status.disabled, scope.row.status);
     }
   }
 };

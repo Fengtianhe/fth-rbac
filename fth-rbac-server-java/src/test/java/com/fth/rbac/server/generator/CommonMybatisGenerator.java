@@ -54,17 +54,18 @@ public class CommonMybatisGenerator {
         String projectName = "";
         String packageName = "com.fth.rbac.server.core";
         // 是否生成mapper对应的interface类 如果不是第一次生成，需要改为false 否则里面方法会被覆盖
-        boolean createInterfaces = false;
+        boolean createInterfaces = true;
 
         // 需要生成的表
         String[] tableNames = {
-//                "fr_app_application",
-//                "fr_app_env",
-//                "ft_app_log",
-                "fr_app_resource",
-//                "fr_app_role",
-//                "fr_app_role_resource",
-                "fr_sys_user",
+                "fr_app",
+                "fr_app_developer",
+                "fr_app_log",
+                "fr_env",
+                "fr_resource",
+                "fr_role",
+                "fr_role_resource",
+                "fr_user",
         };
 
         generate(dbUrl + dbName, dbName, user, pass, projectSrc, parentProjectName, projectName,

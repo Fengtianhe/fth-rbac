@@ -1,6 +1,6 @@
 package com.fth.rbac.server.controller.vo;
 
-import com.fth.rbac.server.core.entity.FrAppApplication;
+import com.fth.rbac.server.core.entity.FrApp;
 import lombok.Data;
 
 /**
@@ -9,6 +9,6 @@ import lombok.Data;
  * @author fengtianhe
  */
 @Data
-public class FrAppApplicationVo extends FrAppApplication {
+public class FrAppVo extends FrApp {
     private String creatorName;
 }
