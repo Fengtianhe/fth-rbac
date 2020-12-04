@@ -21,5 +21,10 @@ export default {
    * 通过关键词查询用户列表
    * @returns {Promise<AxiosResponse<T>>}
    */
-  byKeywords: params => service.get('/api/user/by-keywords', { params })
+  byKeywords: params => service.get('/api/user/by-keywords', { params }),
+
+  /**
+   * 添加用户
+   */
+  add: params => service.post('/api/user', params)
 };

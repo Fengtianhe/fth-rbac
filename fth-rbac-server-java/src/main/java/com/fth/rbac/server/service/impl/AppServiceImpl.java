@@ -1,12 +1,13 @@
 package com.fth.rbac.server.service.impl;
 
+import com.fth.rbac.server.controller.vo.AppUpdateReq;
 import com.fth.rbac.server.controller.vo.AppVo;
-import com.fth.rbac.server.controller.vo.SaveApplicationReq;
-import com.fth.rbac.server.core.entity.FrApp;
-import com.fth.rbac.server.core.entity.FrAppExample;
-import com.fth.rbac.server.core.entity.FrUser;
+import com.fth.rbac.server.controller.vo.AppSaveReq;
+import com.fth.rbac.server.controller.vo.UserInfo;
+import com.fth.rbac.server.core.entity.*;
 import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
+import com.fth.rbac.server.core.mapper.FrAppDeveloperMapper;
 import com.fth.rbac.server.core.mapper.FrAppMapper;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
@@ -16,6 +17,7 @@ import com.fth.rbac.server.service.RoleService;
 import com.fth.rbac.server.service.UserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import io.swagger.models.auth.In;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ import java.util.stream.Collectors;
 public class AppServiceImpl implements AppService {
     @Autowired
     private FrAppMapper FrAppMapper;
+    @Autowired
+    private FrAppDeveloperMapper appDeveloperMapper;
     @Autowired
     private UserService userService;
     @Autowired
@@ -63,6 +67,9 @@ public class AppServiceImpl implements AppService {
             AppVo vo = new AppVo();
             BeanUtils.copyProperties(app, vo);
             vo.setCreatorName(userMap.get(app.getCreator()));
+            // 查询开发人员
+            List<UserInfo> developers = this.getDevelopers(app.getAppId());
+            vo.setDevelopers(developers);
             responseList.add(vo);
         });
 
@@ -78,9 +85,9 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public void add(SaveApplicationReq applicationReq, Integer userId) {
+    public void add(AppSaveReq applicationReq, Integer userId) {
         FrApp saveData = new FrApp();
-        String appId = applicationReq.getAppId().toLowerCase();
+        String appId = applicationReq.getAppId().toLowerCase().replace('_', '-');
         FrApp application = this.selectByAppId(appId);
         if (application != null) {
             throw new CommonException(ExceptionCodes.APPLICATION_DUPLICATE);
@@ -106,5 +113,59 @@ public class AppServiceImpl implements AppService {
             return null;
         }
         return FrApps.get(0);
+    }
+
+    @Override
+    public void update(AppUpdateReq applicationReq, Integer creator) {
+        this.deleteDevelopers(applicationReq.getAppId());
+        this.addDevelopers(applicationReq.getAppId(), applicationReq.getDevelopers(), creator);
+    }
+
+    /**
+     * 查询开发人员
+     *
+     * @param appId
+     * @return
+     */
+    private List<UserInfo> getDevelopers(String appId) {
+        FrAppDeveloperExample example = new FrAppDeveloperExample();
+        example.createCriteria().andAppIdEqualTo(appId);
+        List<FrAppDeveloper> appDevelopers = appDeveloperMapper.selectByExample(example);
+
+        List<UserInfo> developers = new ArrayList<>();
+        appDevelopers.forEach(d->{
+            developers.add(userService.selectInfoById(d.getUserId()));
+        });
+        return developers;
+    }
+
+    /**
+     * 删除开发人员
+     *
+     * @param appId
+     */
+    private void deleteDevelopers(String appId) {
+        FrAppDeveloperExample example = new FrAppDeveloperExample();
+        example.createCriteria().andAppIdEqualTo(appId);
+        appDeveloperMapper.deleteByExample(example);
+    }
+
+    /**
+     * 添加开发人员
+     *
+     * @param appId
+     * @param userIds
+     * @param creator
+     */
+    private void addDevelopers(String appId, List<Integer> userIds, Integer creator) {
+        FrAppDeveloper saveData;
+        for (Integer userId : userIds) {
+            saveData = new FrAppDeveloper();
+            saveData.setUserId(userId);
+            saveData.setCreatedAt(new Date());
+            saveData.setAppId(appId);
+            saveData.setCreator(creator);
+            appDeveloperMapper.insertSelective(saveData);
+        }
     }
 }

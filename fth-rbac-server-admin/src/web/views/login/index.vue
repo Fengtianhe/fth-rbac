@@ -71,7 +71,7 @@
 
 <script>
 import $ from 'jquery';
-import { SysUserService } from '@web/service';
+import { UserService } from '@web/service';
 import md5 from 'md5';
 
 export default {
@@ -98,7 +98,7 @@ export default {
         return;
       }
       const that = this;
-      let url = `/api/sys/user/captcha?username=${this.loginForm.username}`;
+      let url = `/api/user/captcha?username=${this.loginForm.username}`;
       let xhr = new XMLHttpRequest();
       xhr.open('GET', url, true);
       xhr.responseType = 'blob';
@@ -125,12 +125,12 @@ export default {
       this.loginForm.password = md5(this.loginForm.password);
       this.loading = true;
       try {
-        const response = await SysUserService.login(this.loginForm);
+        const response = await UserService.login(this.loginForm);
         if (response.code === 200) {
           this.$store.commit('SET_TOKEN', response.data);
-          await SysUserService.info();
+          await UserService.info();
           this.$store.commit('SET_MENUS');
-          this.$router.push({path: '/'});
+          this.$router.push({ path: '/' });
         } else if (response.code === 604) {
           this.getCode();
           this.loginForm.captcha = '';

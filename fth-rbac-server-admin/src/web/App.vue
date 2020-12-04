@@ -6,7 +6,7 @@
 
 <script>
 
-import { SysUserService } from '@web/service';
+import { UserService } from '@web/service';
 
 export default {
   name: 'App',
@@ -33,7 +33,7 @@ export default {
       this.$store.dispatch('LOGOUT');
       this.$router.push({ path: '/login' });
     } else {
-      SysUserService.info();
+      UserService.info();
       this.$store.commit('SET_MENUS')
     }
     localStorage.removeItem('store');

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {AppEnvService} from "@web/service";
+import {EnvService} from "@web/service";
 import FrSelectApplication from "@web/components/FrSelectApplication";
 
 export default {
@@ -57,7 +57,7 @@ export default {
         return
       }
       this.filterForm.appId = appId
-      const response = await AppEnvService.all(appId)
+      const response = await EnvService.all(appId)
       if (response.code === 200) {
         this.envs = response.data
       }

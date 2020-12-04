@@ -47,7 +47,7 @@
 <script>
 
 import {MappingTools, ResourceMapping} from '@common/mapping';
-import {AppResourceService} from '@web/service';
+import {ResourceService} from '@web/service';
 
 export default {
   name: 'create',
@@ -158,7 +158,7 @@ export default {
       }
     },
     async getTreeListFn () {
-      const res = await AppResourceService.treeAll({
+      const res = await ResourceService.treeAll({
         type: ResourceMapping.type.page.value,
         appId: this.$route.query.appId
       });
@@ -168,7 +168,7 @@ export default {
     },
     async getById () {
       if (this.$route.query.id) {
-        const response = await AppResourceService.getById(this.$route.query.id);
+        const response = await ResourceService.getById(this.$route.query.id);
         if (response.code === 0) {
           this.formData = {
             ...this.formData,
@@ -182,7 +182,7 @@ export default {
       const that = this;
       this.$refs.form.validate(async valid => {
         if (valid) {
-          let response = await AppResourceService.save({
+          let response = await ResourceService.save({
             resourceName: this.formData.name,
             pageUrl: this.formData.pageUrl,
             parentId: this.formData.parentId || '0',

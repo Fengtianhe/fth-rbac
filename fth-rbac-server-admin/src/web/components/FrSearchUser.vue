@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { SysUserService } from '@web/service';
+import { UserService } from '@web/service';
 
 export default {
   name: 'FrSearchUser',
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     async querySearch(queryString, callback) {
-      const response = await SysUserService.byKeywords({ keywords: this.keywords });
+      const response = await UserService.byKeywords({ keywords: this.keywords });
       for (let obj of response.data) {
         obj.name = obj.nickname || obj.username;
       }

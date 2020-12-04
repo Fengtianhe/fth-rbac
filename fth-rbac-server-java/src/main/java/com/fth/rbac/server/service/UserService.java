@@ -1,6 +1,7 @@
 package com.fth.rbac.server.service;
 
 import com.fth.rbac.server.controller.vo.LoginReq;
+import com.fth.rbac.server.controller.vo.UserAddReq;
 import com.fth.rbac.server.controller.vo.UserInfo;
 import com.fth.rbac.server.controller.vo.UserUpdateReq;
 import com.fth.rbac.server.core.entity.FrUser;
@@ -43,4 +44,12 @@ public interface UserService {
      * @return
      */
     List<UserInfo> queryByKeywords(String keywords);
+
+    /**
+     * 创建用户
+     * @param userId
+     * @param user
+     * @return
+     */
+    String addUser(Integer userId, UserAddReq user);
 }

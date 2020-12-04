@@ -2,6 +2,7 @@ package com.fth.rbac.server.controller;
 
 import com.fth.rbac.server.aop.PassToken;
 import com.fth.rbac.server.controller.vo.LoginReq;
+import com.fth.rbac.server.controller.vo.UserAddReq;
 import com.fth.rbac.server.controller.vo.UserInfo;
 import com.fth.rbac.server.controller.vo.UserUpdateReq;
 import com.fth.rbac.server.core.exception.CommonException;
@@ -79,7 +80,7 @@ public class UserController {
 
     @GetMapping("/list")
     @ApiOperation("用户列表")
-    public CommonResponse<PaginationResponse<UserInfo>> list(@RequestParam PaginationRequest request) {
+    public CommonResponse<PaginationResponse<UserInfo>> list(@ModelAttribute PaginationRequest request) {
         PaginationResponse<UserInfo> lists = userService.selectWithPagination(request);
         return CommonResponse.withSuccessResp(lists);
     }
@@ -89,6 +90,14 @@ public class UserController {
     public CommonResponse<List<UserInfo>> queryByKeywords(@RequestParam String keywords){
         List<UserInfo> users = userService.queryByKeywords(keywords);
         return CommonResponse.withSuccessResp(users);
+    }
+
+    @PostMapping("")
+    @ApiOperation("添加用户")
+    public CommonResponse<String> addUser(@RequestBody UserAddReq user, HttpServletRequest request){
+        Integer userId = SecurityHelper.userId(request);
+        String pass = userService.addUser(userId, user);
+        return CommonResponse.withSuccessResp(pass);
     }
 
     private void verifyCaptcha(String username, String captcha) {

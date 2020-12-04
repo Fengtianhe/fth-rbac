@@ -1,7 +1,8 @@
 package com.fth.rbac.server.controller;
 
+import com.fth.rbac.server.controller.vo.AppUpdateReq;
 import com.fth.rbac.server.controller.vo.AppVo;
-import com.fth.rbac.server.controller.vo.SaveApplicationReq;
+import com.fth.rbac.server.controller.vo.AppSaveReq;
 import com.fth.rbac.server.core.entity.FrApp;
 import com.fth.rbac.server.core.utils.SecurityHelper;
 import com.fth.rbac.server.core.utils.common.BaseController;
@@ -12,12 +13,7 @@ import com.fth.rbac.server.service.AppService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -51,10 +47,19 @@ public class AppController extends BaseController {
 
     @ApiOperation("新增应用")
     @PostMapping("")
-    public CommonResponse<Boolean> add(@RequestBody SaveApplicationReq applicationReq, HttpServletRequest httpServletRequest) {
+    public CommonResponse<Boolean> add(@RequestBody AppSaveReq applicationReq, HttpServletRequest httpServletRequest) {
         validateData(applicationReq);
         Integer userId = SecurityHelper.userId(httpServletRequest);
         appAppService.add(applicationReq, userId);
+        return CommonResponse.withSuccessResp(true);
+    }
+
+    @ApiOperation("编辑应用")
+    @PutMapping("")
+    public CommonResponse<Boolean> add(@RequestBody AppUpdateReq applicationReq, HttpServletRequest httpServletRequest) {
+        validateData(applicationReq);
+        Integer userId = SecurityHelper.userId(httpServletRequest);
+        appAppService.update(applicationReq, userId);
         return CommonResponse.withSuccessResp(true);
     }
 }

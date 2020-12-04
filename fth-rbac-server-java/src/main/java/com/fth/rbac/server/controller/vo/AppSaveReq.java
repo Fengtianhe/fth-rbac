@@ -14,7 +14,7 @@ import net.sf.oval.constraint.NotNull;
  */
 @Data
 @ApiModel
-public class SaveApplicationReq {
+public class AppSaveReq {
     @ApiModelProperty("应用ID")
     @NotNull
     @NotEmpty

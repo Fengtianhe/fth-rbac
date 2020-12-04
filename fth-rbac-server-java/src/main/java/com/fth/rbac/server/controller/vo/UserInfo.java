@@ -19,10 +19,11 @@ import java.util.List;
 public class UserInfo {
     private Integer id;
     private String username;
-    private String status;
+    private Integer status;
     private Date createdAt;
     private String nickname;
     private String phone;
+    private Integer admin;
 
     public static List<UserInfo> covert(List<FrUser> users) {
         List<UserInfo> userInfos = new ArrayList<>();

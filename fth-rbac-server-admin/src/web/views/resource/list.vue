@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { AppResourceService } from '@web/service';
+import { ResourceService } from '@web/service';
 import StringHelper from '@common/utils/StringHelper';
 import { ResourceMapping, MappingTools } from '@common/mapping';
 import FrSelectApplication from '@web/components/FrSelectApplication';
@@ -181,14 +181,14 @@ export default {
     async updateSortFn(row, num) {
       let { sort, id } = row;
       let newSort = Number(sort) + num;
-      const res = await AppResourceService.updateSort(id, newSort);
+      const res = await ResourceService.updateSort(id, newSort);
       if (res.code === 200) {
         this.getAllResource();
       }
     },
     async resetSortFn() {
       await this.$alert('此操作只是将目录顺序进行重新编排，不影响现有顺序');
-      const res = await AppResourceService.resetSort();
+      const res = await ResourceService.resetSort();
       if (res.code === 200) {
         this.getAllResource();
       }
@@ -196,7 +196,7 @@ export default {
     async delFn(id) {
       const confirm = await this.$confirm("确定删除资源？此操作不可逆。")
       if (confirm === 'confirm') {
-        const res = await AppResourceService.delete(id);
+        const res = await ResourceService.delete(id);
         if (res.code === 200) {
           this.getAllResource();
         }
@@ -209,7 +209,7 @@ export default {
       return MappingTools.ValueEqMapping(ResourceMapping.type.button, type);
     },
     async changeHidden(row) {
-      const res = await AppResourceService.updateInMenu(row.id, row.inMenu);
+      const res = await ResourceService.updateInMenu(row.id, row.inMenu);
       if (res.code === 200) {
         this.getAllResource();
       }
@@ -218,7 +218,7 @@ export default {
       const params = {
         appId: this.filterForm.appId
       };
-      const response = await AppResourceService.treeAll(params);
+      const response = await ResourceService.treeAll(params);
       if (response.code === 200) {
         const resource = this.setLevel(response.data);
 
@@ -262,14 +262,14 @@ export default {
       return MappingTools.ValueEqMapping(ResourceMapping.status.disabled, row.status);
     },
     async activeResource(row) {
-      const response = await AppResourceService.updateStatus(row.id, ResourceMapping.status.active.value);
+      const response = await ResourceService.updateStatus(row.id, ResourceMapping.status.active.value);
       if (response.code === 200) {
         this.$message.success('操作成功');
         await this.getAllResource();
       }
     },
     async disableResource(row) {
-      const response = await AppResourceService.updateStatus(row.id, ResourceMapping.status.disabled.value);
+      const response = await ResourceService.updateStatus(row.id, ResourceMapping.status.disabled.value);
       if (response.code === 200) {
         this.$message.success('操作成功');
         await this.getAllResource();

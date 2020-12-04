@@ -1,7 +1,8 @@
 package com.fth.rbac.server.service;
 
+import com.fth.rbac.server.controller.vo.AppUpdateReq;
 import com.fth.rbac.server.controller.vo.AppVo;
-import com.fth.rbac.server.controller.vo.SaveApplicationReq;
+import com.fth.rbac.server.controller.vo.AppSaveReq;
 import com.fth.rbac.server.core.entity.FrApp;
 import com.fth.rbac.server.core.utils.common.PaginationRequest;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
@@ -24,8 +25,13 @@ public interface AppService {
 
     List<FrApp> selectAll(Integer userId);
 
-    void add(SaveApplicationReq applicationReq, Integer userId);
+    void add(AppSaveReq applicationReq, Integer userId);
 
     FrApp selectByAppId(String appId);
 
+    /**
+     * 编辑应用
+     * @param applicationReq
+     */
+    void update(AppUpdateReq applicationReq, Integer creator);
 }

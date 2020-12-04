@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {AppApplicationService} from "@web/service";
+import {AppService} from "@web/service";
 
 export default {
   name: "FrSelectApplication",
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     async fetchAllApplication () {
-      const response = await AppApplicationService.all()
+      const response = await AppService.all()
       if (response.code === 200) {
         this.applications = response.data
       }

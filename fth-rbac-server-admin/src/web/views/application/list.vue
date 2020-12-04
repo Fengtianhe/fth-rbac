@@ -84,7 +84,7 @@
 <script>
 
 import { TableContainer } from 'element-table-mixin';
-import { AppApplicationService } from '@web/service';
+import { AppService } from '@web/service';
 import { tableFormatDate } from '@common/utils/table';
 import { ApplicationMapping, MappingTools } from '@common/mapping';
 import FrSearchUser from '@web/components/FrSearchUser';
@@ -94,7 +94,7 @@ export default {
   components: { FrSearchUser, TableContainer },
   data() {
     return {
-      tableDataUrl: AppApplicationService.URL_APP_APPLICATION_LIST,
+      tableDataUrl: AppService.URL_APP_APPLICATION_LIST,
       filterForm: {
         appId: '',
         appName: '',
@@ -104,7 +104,7 @@ export default {
         { label: '应用ID', prop: 'appId' },
         { label: '应用名称', prop: 'appName' },
         { label: '状态', prop: 'status', formatter: this.matchAppStatus },
-        { label: '负责人', prop: '' },
+        { label: '负责人', prop: 'developers', formatter: this.formatDevelopers },
         { label: '创建人', prop: 'creatorName' },
         { label: '创建时间', prop: 'createdAt', align: 'center', width: '130px', formatter: tableFormatDate }
       ],
@@ -128,10 +128,13 @@ export default {
     },
     async onConfirmSubmit() {
       if (this.dialogType === '编辑') {
-        await AppApplicationService.update(this.dialogForm);
+        await AppService.update({
+          ...this.dialogForm,
+          developers: this.dialogForm.developers.map(o => o.id)
+        });
         this.$message.success('编辑成功');
       } else {
-        await AppApplicationService.add(this.dialogForm);
+        await AppService.add(this.dialogForm);
         this.$message.success('添加成功');
       }
       this.onCancelSubmit();
@@ -139,7 +142,7 @@ export default {
     },
     showEditDialog(scope) {
       this.dialog = true;
-      this.dialogType = '編輯';
+      this.dialogType = '编辑';
       this.dialogForm.appId = scope.row.appId;
       this.dialogForm.appName = scope.row.appName;
       this.dialogForm.developers = scope.row.developers || [];
@@ -163,6 +166,13 @@ export default {
     },
     isAppDisabled(scope) {
       return MappingTools.ValueEqMapping(ApplicationMapping.status.disabled, scope.row.status);
+    },
+    formatDevelopers(row) {
+      let devnames = [];
+      for (let dev of row.developers) {
+        devnames.push(dev.nickname || dev.username);
+      }
+      return devnames.join(',');
     }
   }
 };

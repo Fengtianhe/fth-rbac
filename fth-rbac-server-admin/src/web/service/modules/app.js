@@ -1,4 +1,5 @@
-import service from '@/common/utils/request'
+import service from '@/common/utils/request';
+
 const URL_APP_APPLICATION_LIST = '/api/app/list';
 
 export default {
@@ -12,8 +13,15 @@ export default {
   add: params => service.post('/api/app', params),
 
   /**
+   * 更新应用
+   * @param params
+   * @returns {Promise<AxiosResponse<T>>}
+   */
+  update: params => service.put('/api/app', params),
+  
+  /**
    * 所有有权限的应用
    * @returns {Promise<AxiosResponse<T>>}
    */
   all: () => service.get('/api/app/all')
-}
+};

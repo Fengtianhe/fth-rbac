@@ -1,11 +1,11 @@
-import AppApplicationService from './modules/appApplication';
-import AppEnvService from './modules/appEnv';
-import AppResourceService from './modules/appResource';
-import SysUserService from './modules/sysUser';
+import AppService from './modules/app';
+import EnvService from './modules/env';
+import ResourceService from './modules/resource';
+import UserService from './modules/user';
 
 export {
-  AppApplicationService,
-  AppEnvService,
-  AppResourceService,
-  SysUserService
+  AppService,
+  EnvService,
+  ResourceService,
+  UserService
 };

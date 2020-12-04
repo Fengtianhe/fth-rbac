@@ -1,9 +1,10 @@
-import ResourceMapping from './modules/resource'
-import ApplicationMapping from './modules/application'
+import ResourceMapping from './modules/resource';
+import ApplicationMapping from './modules/application';
+import UserMapping from './modules/user';
 
 const MappingTools = {
   // 根据值获取label
-  MatchLabelByAllObject: function (mapping, val, labelKey = "label") {
+  MatchLabelByAllObject: function (mapping, val, labelKey = 'label') {
     for (const item in mapping) {
       console.log(mapping[item]);
       if (String(mapping[item].value) === String(val)) {
@@ -11,16 +12,16 @@ const MappingTools = {
         return mapping[item][labelKey];
       }
     }
-    return "-";
+    return '-';
   },
   // 根据值获取label
-  MatchLabel: function (mapping, val, labelKey = "label") {
+  MatchLabel: function (mapping, val, labelKey = 'label') {
     for (const item in mapping) {
       if (String(mapping[item].value) === String(val)) {
         return mapping[item][labelKey];
       }
     }
-    return "-";
+    return '-';
   },
   // 根据值获取object
   MatchObject: function (mapping, val) {
@@ -40,15 +41,16 @@ const MappingTools = {
     return options;
   },
   ValueEqMapping: (mapping, val) => {
-    if (typeof (mapping) === "object") {
+    if (typeof (mapping) === 'object') {
       return String(mapping.value) === String(val);
     }
     return String(mapping) === String(val);
   }
-}
+};
 
 export {
   ResourceMapping,
   ApplicationMapping,
+  UserMapping,
   MappingTools
 };
