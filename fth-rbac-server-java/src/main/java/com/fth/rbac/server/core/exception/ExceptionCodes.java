@@ -22,5 +22,8 @@ public interface ExceptionCodes {
     ExceptionCode RESOURCE_UNKNOWN_PARAMS = new ExceptionCode(701, "未知参数");
     ExceptionCode RESOURCE_SORT_NOT_CHANGE = new ExceptionCode(702, "资源未知未移动");
     ExceptionCode RESOURCE_UNKNOWN = new ExceptionCode(703, "无法找到资源");
-
+    /**
+     * 角色相关错误
+     */
+    ExceptionCode ROLE_SUPER_CANNOT_UPT = new ExceptionCode(801, "最大角色无法修改");
 }

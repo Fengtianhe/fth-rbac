@@ -6,6 +6,9 @@ import com.fth.rbac.server.core.entity.FrRole;
 import com.fth.rbac.server.core.entity.FrRoleExample;
 import com.fth.rbac.server.core.entity.FrRoleResource;
 import com.fth.rbac.server.core.entity.FrRoleResourceExample;
+import com.fth.rbac.server.core.exception.CommonException;
+import com.fth.rbac.server.core.exception.ExceptionCode;
+import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.mapper.FrRoleMapper;
 import com.fth.rbac.server.core.mapper.FrRoleResourceMapper;
 import com.fth.rbac.server.core.utils.common.PaginationResponse;
@@ -93,6 +96,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     private void updateAssignRole(RoleAssignReq request) {
+        this.checkAdminRole(request.getAppId(), request.getRoleId());
+
         FrRole role = this.selectByRoleId(request.getRoleId());
         if (!request.getRoleName().equals(role.getRoleName())) {
             FrRole updateData = new FrRole();
@@ -102,6 +107,17 @@ public class RoleServiceImpl implements RoleService {
 
         this.deleteAssignByRoleId(request.getRoleId());
         this.assignResource(request.getRoleId(), request.getResourceIds());
+    }
+
+    /**
+     * 检查是否是默认角色
+     *
+     * @param appId
+     */
+    private void checkAdminRole(String appId, String roleId) {
+        if (roleId.equals(this.getAdminId(appId))) {
+throw new CommonException(ExceptionCodes.ROLE_SUPER_CANNOT_UPT);
+        }
     }
 
     private void deleteAssignByRoleId(String roleId) {
