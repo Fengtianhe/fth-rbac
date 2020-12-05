@@ -18,4 +18,6 @@ public class ResourceTreeReq {
     private String appId;
 
     private Integer type;
+
+    private Integer status;
 }

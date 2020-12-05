@@ -24,10 +24,10 @@ const routes = [
     ]
   },
   {
-    path: '/application',
+    path: '/',
     component: Layout,
-    name: '应用管理',
-    redirect: '/application/user/list',
+    name: 'FTHRBAC',
+    redirect: '/app/list',
     children: [
       {path: 'app/list', name: '应用列表', component: () => import('@web/views/application/list')},
       {
@@ -57,15 +57,13 @@ const routes = [
         name: '应用角色',
         component: () => import('@web/views/role/list')
       },
-    ]
-  },
-  {
-    path: '/system',
-    component: Layout,
-    name: '系统管理',
-    redirect: '/application/user/list',
-    children: [
-      {path: 'user/list', name: '用户管理', component: () => import('@web/views/user/list')},
+      {
+        path: 'role/deploy',
+        name: '角色配置',
+        component: () => import('@web/views/role/deploy'),
+        meta: {hideQuickVisit: true}
+      },
+      {path: 'user/list', name: '用户管理', component: () => import('@web/views/user/list')}
     ]
   },
   {path: '*', redirect: '/404'}

@@ -7,11 +7,9 @@ import com.fth.rbac.server.controller.vo.UserInfo;
 import com.fth.rbac.server.controller.vo.UserUpdateReq;
 import com.fth.rbac.server.core.entity.FrUser;
 import com.fth.rbac.server.core.entity.FrUserExample;
-import com.fth.rbac.server.core.enums.SysUserStatusEnum;
+import com.fth.rbac.server.core.enums.UserStatusEnum;
 import com.fth.rbac.server.core.enums.UserAdminEnum;
-import com.fth.rbac.server.core.enums.base.EnumFactory;
 import com.fth.rbac.server.core.exception.CommonException;
-import com.fth.rbac.server.core.exception.ExceptionCode;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.mapper.FrUserMapper;
 import com.fth.rbac.server.core.utils.SecurityHelper;
@@ -21,15 +19,11 @@ import com.fth.rbac.server.service.UserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
-import sun.security.provider.MD5;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -153,7 +147,7 @@ public class UserServiceImpl implements UserService {
 
         FrUser saveData = new FrUser();
         saveData.setCreatedAt(new Date());
-        saveData.setStatus(SysUserStatusEnum.SYMBOL_RESET_PWD);
+        saveData.setStatus(UserStatusEnum.SYMBOL_RESET_PWD);
         saveData.setUsername(username);
         saveData.setPassword(security);
         sysUserMapper.insertSelective(saveData);

@@ -44,7 +44,7 @@ public class ResourceController extends BaseController {
 
     @ApiOperation("资源列表-所有")
     @GetMapping("/tree-all")
-    public CommonResponse all(@ModelAttribute ResourceTreeReq resourceTreeReq) {
+    public CommonResponse treeAll(@ModelAttribute ResourceTreeReq resourceTreeReq) {
         List<ResourceTreeResp> tree = resourceService.treeAll(resourceTreeReq);
         return CommonResponse.withSuccessResp(tree);
     }

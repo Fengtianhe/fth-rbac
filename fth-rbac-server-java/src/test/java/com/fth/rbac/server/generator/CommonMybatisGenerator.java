@@ -63,9 +63,9 @@ public class CommonMybatisGenerator {
 //                "fr_app_log",
 //                "fr_env",
 //                "fr_resource",
-//                "fr_role",
+                "fr_role",
 //                "fr_role_resource",
-                "fr_user",
+//                "fr_user",
         };
 
         generate(dbUrl + dbName, dbName, user, pass, projectSrc, parentProjectName, projectName,

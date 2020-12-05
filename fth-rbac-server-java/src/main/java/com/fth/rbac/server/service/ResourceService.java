@@ -72,6 +72,7 @@ public interface ResourceService {
 
     /**
      * 删除资源
+     *
      * @param resourceId
      */
     void deleteById(String resourceId);

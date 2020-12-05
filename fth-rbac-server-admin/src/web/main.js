@@ -11,6 +11,7 @@ import {TableMixinConfig} from 'element-table-mixin'
 TableMixinConfig.REQUEST = request
 TableMixinConfig.EL_TABLE_SIZE = "mini"
 TableMixinConfig.EL_TABLE_BORDER = false
+TableMixinConfig.REQUEST_PAGENUM_FIELD = 'pageNumber'
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;

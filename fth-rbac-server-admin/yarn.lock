@@ -2888,10 +2888,9 @@ electron-to-chromium@^1.3.591:
   version "1.3.593"
   resolved "https://registry.npm.taobao.org/electron-to-chromium/download/electron-to-chromium-1.3.593.tgz#947ccf6dc8e013e2b053d2463ecd1043c164fcef"
 
-element-table-mixin@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.npm.taobao.org/element-table-mixin/download/element-table-mixin-0.0.10.tgz?cache=0&sync_timestamp=1606574779448&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felement-table-mixin%2Fdownload%2Felement-table-mixin-0.0.10.tgz#b5f53d490d955812f1e0ccd6d8f40e349abeb8f6"
-  integrity sha1-tfU9SQ2VWBLx4MzW2PQONJq+uPY=
+element-table-mixin@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.npm.taobao.org/element-table-mixin/download/element-table-mixin-0.0.13.tgz#8ff09af38d3bdf071abc7c9e503c0e4fdcd6f89f"
 
 element-ui@^2.14.1:
   version "2.14.1"

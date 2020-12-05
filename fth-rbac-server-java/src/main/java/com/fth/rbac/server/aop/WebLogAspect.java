@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * 入参 出参日志打印
+ *
  * @author fengtianhe
  * @version $Id: WebLogAspect.java, v 0.1 2018年10月15日 下午6:37:11 19391 Exp $
  */
@@ -28,12 +29,16 @@ import java.util.List;
 @Component
 @Slf4j
 public class WebLogAspect {
+    private long starttime;
+
     @Pointcut("execution(public * com.fth.rbac.server.controller..*.*(..))")//切入点描述 这个是controller包的切入点
     public void webLog() {
     }
 
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
+        this.starttime = System.currentTimeMillis();
+
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();
@@ -62,6 +67,9 @@ public class WebLogAspect {
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")
     public void doAfterReturning(Object ret) throws Throwable {
+        long endtime = System.currentTimeMillis();
+        long exectime = endtime - starttime;
+        log.info("接口执行时间：{}ms", exectime);
         // 打印出来有点长，不打印了...
 //        log.info("【返回值】= {} ", JSON.toJSONString(ret));
     }

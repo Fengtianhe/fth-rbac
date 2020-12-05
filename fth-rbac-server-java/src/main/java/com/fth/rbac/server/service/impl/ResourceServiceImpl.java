@@ -6,8 +6,8 @@ import com.fth.rbac.server.controller.vo.ResourceSaveReq;
 import com.fth.rbac.server.controller.vo.ResourceUpdateReq;
 import com.fth.rbac.server.core.entity.FrResource;
 import com.fth.rbac.server.core.entity.FrResourceExample;
-import com.fth.rbac.server.core.enums.AppResourceStatusEnum;
-import com.fth.rbac.server.core.enums.AppResourceTypeEnum;
+import com.fth.rbac.server.core.enums.ResourceStatusEnum;
+import com.fth.rbac.server.core.enums.ResourceTypeEnum;
 import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.mapper.FrResourceMapper;
@@ -69,6 +69,9 @@ public class ResourceServiceImpl implements ResourceService {
         if (resourceTreeReq.getType() != null) {
             criteria.andTypeEqualTo(resourceTreeReq.getType());
         }
+        if (resourceTreeReq.getStatus() != null) {
+            criteria.andStatusEqualTo(resourceTreeReq.getStatus());
+        }
         // 按sort正排
         example.setOrderByClause("sort");
         List<FrResource> FrResources = appResourceMapper.selectByExample(example);
@@ -115,9 +118,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public void updateStatus(String resourceId, Integer status) {
-        if (AppResourceStatusEnum.SYMBOL_ENABLED.equals(status)) {
+        if (ResourceStatusEnum.SYMBOL_ENABLED.equals(status)) {
             this.enableResource(resourceId);
-        } else if (AppResourceStatusEnum.SYMBOL_DISABLED.equals(status)) {
+        } else if (ResourceStatusEnum.SYMBOL_DISABLED.equals(status)) {
             this.disabledResource(resourceId);
         }
     }
@@ -177,7 +180,7 @@ public class ResourceServiceImpl implements ResourceService {
         for (FrResource FrResource : subList) {
             updateData = new FrResource();
             updateData.setId(FrResource.getId());
-            updateData.setStatus(AppResourceStatusEnum.SYMBOL_DISABLED);
+            updateData.setStatus(ResourceStatusEnum.SYMBOL_DISABLED);
             appResourceMapper.updateByPrimaryKeySelective(updateData);
         }
     }
@@ -195,7 +198,7 @@ public class ResourceServiceImpl implements ResourceService {
         if (resources != null && resources.size() > 0) {
             result.addAll(resources);
             for (FrResource tagMenu : resources) {
-                if (tagMenu.getType().equals(AppResourceTypeEnum.SYMBOL_PAGE)) {
+                if (tagMenu.getType().equals(ResourceTypeEnum.SYMBOL_PAGE)) {
                     criteria.andParentIdEqualTo(tagMenu.getId());
                     List<FrResource> list = appResourceMapper.selectByExample(example);
                     if (list != null && list.size() > 0) {
@@ -217,7 +220,7 @@ public class ResourceServiceImpl implements ResourceService {
         // 如果不是顶级资源，就一直往上找, 依次启用
         FrResource updateData = new FrResource();
         updateData.setId(resource.getId());
-        updateData.setStatus(AppResourceStatusEnum.SYMBOL_ENABLED);
+        updateData.setStatus(ResourceStatusEnum.SYMBOL_ENABLED);
         appResourceMapper.updateByPrimaryKeySelective(updateData);
 
         if (!"0".equals(resource.getParentId())) {
@@ -257,7 +260,7 @@ public class ResourceServiceImpl implements ResourceService {
     public String getResourceId(String appId, Integer type) {
         long count = this.count(appId, type);
         String resourceId = String.format("%04d", count);
-        String typeName = type.equals(AppResourceTypeEnum.SYMBOL_PAGE) ? "PAGE" : "BTN";
+        String typeName = type.equals(ResourceTypeEnum.SYMBOL_PAGE) ? "PAGE" : "BTN";
         return "RES_" + typeName + "_" + appId + "_" + resourceId;
     }
 

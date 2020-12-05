@@ -276,11 +276,11 @@ export default {
       }
     },
     toCreateResource() {
-      this.$router.push({ path: '/application/resource/create', query: { appId: this.filterForm.appId } });
+      this.$router.push({ path: '/resource/create', query: { appId: this.filterForm.appId } });
     },
     toEdit(row) {
       this.$router.push({
-        path: '/application/resource/edit',
+        path: '/resource/edit',
         query: { resourceId: row.id, appId: row.appId }
       });
     },

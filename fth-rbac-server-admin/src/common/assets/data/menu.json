@@ -8,27 +8,27 @@
   },
   {
     "name": "应用管理",
-    "path": "/application/app/list",
+    "path": "/app/list",
     "meta": {
       "iconCls": "iconfont friconall"
     }
   },
   {
     "name": "资源管理",
-    "path": "/application/resource/list",
+    "path": "/resource/list",
     "meta": {
       "iconCls": "iconfont friconclick"
     }
   },
   {
     "name": "角色管理",
-    "path": "/application/role/list",
+    "path": "/role/list",
     "meta": {
       "iconCls": "iconfont friconzhanghucaozuo"
     }
   },
   {
-    "name": "报表管理",
+    "name": "应用监控",
     "path": "/monitor/index",
     "meta": {
       "iconCls": "iconfont fricontradingvolume"
@@ -36,7 +36,7 @@
   },
   {
     "name": "用户管理",
-    "path": "/system/user/list",
+    "path": "/user/list",
     "meta": {
       "iconCls": "iconfont fricontool-hardware"
     }
