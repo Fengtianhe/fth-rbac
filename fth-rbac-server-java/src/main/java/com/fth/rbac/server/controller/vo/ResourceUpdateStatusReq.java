@@ -1,8 +1,8 @@
 package com.fth.rbac.server.controller.vo;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import net.sf.oval.constraint.NotEmpty;
+import net.sf.oval.constraint.NotNull;
 
 import java.io.Serializable;
 

@@ -1,9 +1,9 @@
 package com.fth.rbac.server.controller.vo;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.sf.oval.constraint.NotEmpty;
+import net.sf.oval.constraint.NotNull;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 
