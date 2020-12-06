@@ -6,12 +6,14 @@ import com.fth.rbac.server.controller.vo.ResourceSaveReq;
 import com.fth.rbac.server.controller.vo.ResourceUpdateReq;
 import com.fth.rbac.server.core.entity.FrResource;
 import com.fth.rbac.server.core.entity.FrResourceExample;
+import com.fth.rbac.server.core.enums.ResourceInmenuEnum;
 import com.fth.rbac.server.core.enums.ResourceStatusEnum;
 import com.fth.rbac.server.core.enums.ResourceTypeEnum;
 import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.mapper.FrResourceMapper;
 import com.fth.rbac.server.core.mapper.ext.FrResourceMapperExt;
+import com.fth.rbac.server.sdk.vo.MenuTreeResp;
 import com.fth.rbac.server.service.ResourceService;
 import com.fth.rbac.server.service.RoleService;
 import org.apache.commons.collections.CollectionUtils;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.management.relation.RoleResult;
+import java.awt.Menu;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -163,6 +167,26 @@ public class ResourceServiceImpl implements ResourceService {
             appResourceMapper.deleteByPrimaryKey(resId);
             roleService.deleteByResourceId(resId);
         }
+    }
+
+    @Override
+    public List<MenuTreeResp> getMenuByRoleId(List<String> roleIds) {
+        List<String> resourceIds = roleService.selectResourceIdsByRoleIds(roleIds);
+        List<FrResource> resources = this.getByResourceIds(resourceIds);
+        // 过滤出 [显示] 在目录中的 [启用] 的 [页面] 资源
+        resources = resources.stream().filter(res ->
+                res.getType().equals(ResourceTypeEnum.SYMBOL_PAGE)
+                        && res.getInMenu().equals(ResourceInmenuEnum.SYMBOL_SHOW)
+                        && res.getStatus().equals(ResourceStatusEnum.SYMBOL_ENABLED)
+        ).collect(Collectors.toList());
+        return MenuTreeResp.covert(this.covertToTree(resources));
+    }
+
+    private List<FrResource> getByResourceIds(List<String> resourceIds) {
+        FrResourceExample example = new FrResourceExample();
+        example.createCriteria().andIdIn(resourceIds);
+        example.setOrderByClause("sort");
+        return appResourceMapper.selectByExample(example);
     }
 
     /**

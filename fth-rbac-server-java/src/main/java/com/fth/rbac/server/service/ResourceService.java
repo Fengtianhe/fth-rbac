@@ -5,6 +5,7 @@ import com.fth.rbac.server.controller.vo.ResourceTreeResp;
 import com.fth.rbac.server.controller.vo.ResourceSaveReq;
 import com.fth.rbac.server.controller.vo.ResourceUpdateReq;
 import com.fth.rbac.server.core.entity.FrResource;
+import com.fth.rbac.server.sdk.vo.MenuTreeResp;
 
 import java.util.List;
 
@@ -76,4 +77,11 @@ public interface ResourceService {
      * @param resourceId
      */
     void deleteById(String resourceId);
+
+    /**
+     * 通过角色获取目录
+     * @param roleIds
+     * @return
+     */
+    List<MenuTreeResp> getMenuByRoleId(List<String> roleIds);
 }

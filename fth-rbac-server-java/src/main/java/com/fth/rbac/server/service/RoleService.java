@@ -62,4 +62,11 @@ public interface RoleService {
      * @return
      */
     List<String> selectAssignResourceIds(String roleId);
+
+    /**
+     * 通过角色查询资源ID集合
+     * @param roleIds
+     * @return
+     */
+    List<String> selectResourceIdsByRoleIds(List<String> roleIds);
 }

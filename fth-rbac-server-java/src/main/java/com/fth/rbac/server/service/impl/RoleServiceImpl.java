@@ -95,8 +95,20 @@ public class RoleServiceImpl implements RoleService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<String> selectResourceIdsByRoleIds(List<String> roleIds) {
+        FrRoleResourceExample example = new FrRoleResourceExample();
+        example.createCriteria().andRoleIdIn(roleIds);
+        List<FrRoleResource> frRoleResources = roleResourceMapper.selectByExample(example);
+        // 取出资源ID去重
+        return frRoleResources.stream()
+                .map(FrRoleResource::getResourceId)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
     private void updateAssignRole(RoleAssignReq request) {
-        this.checkAdminRole(request.getAppId(), request.getRoleId());
+//        this.checkAdminRole(request.getAppId(), request.getRoleId());
 
         FrRole role = this.selectByRoleId(request.getRoleId());
         if (!request.getRoleName().equals(role.getRoleName())) {
@@ -116,7 +128,7 @@ public class RoleServiceImpl implements RoleService {
      */
     private void checkAdminRole(String appId, String roleId) {
         if (roleId.equals(this.getAdminId(appId))) {
-throw new CommonException(ExceptionCodes.ROLE_SUPER_CANNOT_UPT);
+            throw new CommonException(ExceptionCodes.ROLE_SUPER_CANNOT_UPT);
         }
     }
 
