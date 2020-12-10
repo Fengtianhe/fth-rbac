@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "element-table-mixin": "^0.0.13",
     "element-ui": "^2.14.1",
+    "fth-rbac-client": "^0.0.1",
     "jquery": "^3.5.1",
     "md5": "^2.3.0",
     "screenfull": "^5.0.2",

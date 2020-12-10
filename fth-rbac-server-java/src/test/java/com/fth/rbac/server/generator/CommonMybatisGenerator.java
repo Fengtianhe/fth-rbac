@@ -58,12 +58,12 @@ public class CommonMybatisGenerator {
 
         // 需要生成的表
         String[] tableNames = {
-//                "fr_app",
+                "fr_app",
 //                "fr_app_developer",
 //                "fr_app_log",
 //                "fr_env",
 //                "fr_resource",
-                "fr_role",
+//                "fr_role",
 //                "fr_role_resource",
 //                "fr_user",
         };

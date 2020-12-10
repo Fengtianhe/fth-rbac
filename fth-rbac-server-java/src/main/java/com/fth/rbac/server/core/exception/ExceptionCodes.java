@@ -26,4 +26,9 @@ public interface ExceptionCodes {
      * 角色相关错误
      */
     ExceptionCode ROLE_SUPER_CANNOT_UPT = new ExceptionCode(801, "最大角色无法修改");
+    /**
+     * SDK 错误
+     */
+    ExceptionCode SDK_UNKNOWN_APPID = new ExceptionCode(901, "未知APPID");
+    ExceptionCode SDK_UNKNOWN_APP = new ExceptionCode(902, "未知应用");
 }

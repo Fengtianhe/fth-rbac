@@ -6,12 +6,20 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import request from '@common/utils/request';
 import '@common/filter';
-import {TableMixinConfig} from 'element-table-mixin'
+import { TableMixinConfig } from 'element-table-mixin';
+import FthRbacClient from 'fth-rbac-client';
 
-TableMixinConfig.REQUEST = request
-TableMixinConfig.EL_TABLE_SIZE = "mini"
-TableMixinConfig.EL_TABLE_BORDER = false
-TableMixinConfig.REQUEST_PAGENUM_FIELD = 'pageNumber'
+// ElementTableMixin
+TableMixinConfig.REQUEST = request;
+TableMixinConfig.EL_TABLE_SIZE = 'mini';
+TableMixinConfig.EL_TABLE_BORDER = false;
+TableMixinConfig.REQUEST_PAGENUM_FIELD = 'pageNumber';
+
+// FthRbac
+FthRbacClient.serverDomain = 'http://127.0.0.1:8080';
+FthRbacClient.appId = 'tjd-lms';
+console.log(FthRbacClient);
+FthRbacClient.menu('tjd-lms_0001');
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
