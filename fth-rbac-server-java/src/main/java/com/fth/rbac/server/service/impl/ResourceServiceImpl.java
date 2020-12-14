@@ -182,6 +182,23 @@ public class ResourceServiceImpl implements ResourceService {
         return MenuTreeResp.covert(this.covertToTree(resources));
     }
 
+    @Override
+    public List<FrResource> getBtnsByRoleId(String pageUrl, List<String> roleIds) {
+        List<String> resourceIds = roleService.selectResourceIdsByRoleIds(roleIds);
+        // 校验是否有当前页面路径权限
+        FrResourceExample example = new FrResourceExample();
+        example.createCriteria()
+                .andPageUrlEqualTo(pageUrl)
+                .andIdIn(resourceIds);
+        List<FrResource> frResources = appResourceMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(frResources)) {
+            throw new CommonException(ExceptionCodes.RESOURCE_PAGE_AUTH_FAILURE).args(pageUrl);
+        }
+
+        List<FrResource> btnResource = this.selectBtnByResourceId(frResources.get(0).getId());
+        return btnResource;
+    }
+
     private List<FrResource> getByResourceIds(List<String> resourceIds) {
         FrResourceExample example = new FrResourceExample();
         example.createCriteria().andIdIn(resourceIds);
@@ -311,5 +328,13 @@ public class ResourceServiceImpl implements ResourceService {
                 .max(Comparator.comparing(FrResource::getSort))
                 .get();
         return resource.getSort() + 1;
+    }
+
+    private List<FrResource> selectBtnByResourceId(String resourceId) {
+        FrResourceExample example = new FrResourceExample();
+        example.createCriteria()
+                .andTypeEqualTo(ResourceTypeEnum.SYMBOL_BTN)
+                .andParentIdEqualTo(resourceId);
+        return appResourceMapper.selectByExample(example);
     }
 }

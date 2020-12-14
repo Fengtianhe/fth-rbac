@@ -84,4 +84,12 @@ public interface ResourceService {
      * @return
      */
     List<MenuTreeResp> getMenuByRoleId(List<String> roleIds);
+
+    /**
+     * 获取按钮资源
+     * @param pageUrl
+     * @param asList
+     * @return
+     */
+    List<FrResource> getBtnsByRoleId(String pageUrl, List<String> asList);
 }

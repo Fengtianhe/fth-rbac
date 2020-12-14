@@ -22,10 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -61,15 +58,7 @@ public class CorsFilter implements Filter {
                 return;
             }
 
-            // 首先判断来源是否是npm包的方式请求的
             Map<String, String> params = this.params(request);
-            String client = params.get("client");
-            if (!"npm".equalsIgnoreCase(client)) {
-                log.info("请求路径为{}, 请求客户端类型为{}， 通过CorsFilter校验", requestURI, client);
-                filterChain.doFilter(servletRequest, servletResponse);
-                return;
-            }
-
             // 判断appId 和 domain 是否匹配，并且是否在
             String appId = params.get("appId");
             if (StringUtils.isEmpty(appId)) {
@@ -80,10 +69,27 @@ public class CorsFilter implements Filter {
                 throw new CommonException(ExceptionCodes.SDK_UNKNOWN_APP);
             }
             String remoteHost = request.getRemoteHost();
-            if (!app.getDomain().equals(remoteHost)) {
-
+            if (StringUtils.isEmpty(app.getDomain())) {
+                throw new CommonException(ExceptionCodes.SDK_UNKNOWN_DOMAIN);
             }
 
+            boolean hostPass =false;
+            List<String> domains = Arrays.asList(app.getDomain().split(";"));
+            for (String domain : domains) {
+                if(domain.contains(remoteHost)){
+                    hostPass = true;
+                    break;
+                }
+            }
+            if(!hostPass){
+                throw new CommonException(ExceptionCodes.SDK_ERROR_HOST);
+            }
+
+            String client = params.get("client");
+            if ("npm".equalsIgnoreCase(client)) {
+                log.info("请求路径为{}, 请求客户端类型为{}， 设置跨域", requestURI, client);
+                this.setCros(response);
+            }
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (CommonException e) {
             this.returnJson(request, response, e.getCode(), e.getMessage());
@@ -107,18 +113,22 @@ public class CorsFilter implements Filter {
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
     }
 
-    private void returnJson(HttpServletRequest request, HttpServletResponse response, int code, String message) throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", code);
-        map.put("message", message);
-
-        PrintWriter writer = null;
+    private void setCros(HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
 //        response.addHeader("Access-Control-Allow-Credentials", "true");
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
         response.addHeader("Access-Control-Allow-Headers", "Content-Type,X-CAF-Authorization-Token,sessionToken,X-TOKEN");
+    }
+
+    private void returnJson(HttpServletRequest request, HttpServletResponse response, int code, String message) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", code);
+        map.put("message", message);
+
+        PrintWriter writer = null;
+        this.setCros(response);
         try {
             if ("OPTIONS".equals(request.getMethod())) {
                 response.getWriter().println("ok");

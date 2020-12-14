@@ -22,6 +22,7 @@ public interface ExceptionCodes {
     ExceptionCode RESOURCE_UNKNOWN_PARAMS = new ExceptionCode(701, "未知参数");
     ExceptionCode RESOURCE_SORT_NOT_CHANGE = new ExceptionCode(702, "资源未知未移动");
     ExceptionCode RESOURCE_UNKNOWN = new ExceptionCode(703, "无法找到资源");
+    ExceptionCode RESOURCE_PAGE_AUTH_FAILURE = new ExceptionCode(704, "无该页面访问权限：{}");
     /**
      * 角色相关错误
      */
@@ -31,4 +32,6 @@ public interface ExceptionCodes {
      */
     ExceptionCode SDK_UNKNOWN_APPID = new ExceptionCode(901, "未知APPID");
     ExceptionCode SDK_UNKNOWN_APP = new ExceptionCode(902, "未知应用");
+    ExceptionCode SDK_UNKNOWN_DOMAIN = new ExceptionCode(903, "未配置应用域");
+    ExceptionCode SDK_ERROR_HOST = new ExceptionCode(903, "错误的请求域");
 }
