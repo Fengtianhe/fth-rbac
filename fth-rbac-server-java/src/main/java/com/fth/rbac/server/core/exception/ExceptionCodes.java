@@ -33,5 +33,5 @@ public interface ExceptionCodes {
     ExceptionCode SDK_UNKNOWN_APPID = new ExceptionCode(901, "未知APPID");
     ExceptionCode SDK_UNKNOWN_APP = new ExceptionCode(902, "未知应用");
     ExceptionCode SDK_UNKNOWN_DOMAIN = new ExceptionCode(903, "未配置应用域");
-    ExceptionCode SDK_ERROR_HOST = new ExceptionCode(903, "错误的请求域");
+    ExceptionCode SDK_ERROR_HOST = new ExceptionCode(904, "错误的请求域");
 }
