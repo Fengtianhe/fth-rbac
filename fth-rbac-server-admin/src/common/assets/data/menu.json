@@ -1,7 +1,7 @@
 [
   {
     "name": "首页",
-    "path": "/",
+    "path": "/dashboard/index",
     "meta": {
       "iconCls": "iconfont friconhome"
     }

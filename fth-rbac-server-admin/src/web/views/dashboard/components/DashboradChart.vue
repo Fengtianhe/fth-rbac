@@ -21,7 +21,7 @@ export default {
           top: '10%',
           left: '1%',
           right: '4%',
-          bottom: '20%',
+          bottom: '10%',
           containLabel: true
         },
         xAxis: {

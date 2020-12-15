@@ -10,6 +10,14 @@
       </div>
       <div class="message"></div>
     </div>
+
+    <div class="dashboard-copyright">
+      <span>Version: 1.2.1</span>
+      <span>
+        Copyleft © 2020-{{year}} Fengtianhe. All rights reserved.
+      <a href="https://github.com/Fengtianhe/fth-rbac" target="_blank">https://github.com/Fengtianhe/fth-rbac</a>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -23,7 +31,9 @@ export default {
   name: 'DashboardAdmin',
   components: { DashboradChart, DashboardTopCard },
   data() {
-    return {};
+    return {
+      year: new Date().getFullYear()
+    };
   },
   created() {
 
@@ -53,6 +63,16 @@ export default {
         flex: 0 0 400px;
         height: 100%;
       }
+    }
+
+    .dashboard-copyright {
+      padding: 0 20px;
+      font-size: 12px;
+      flex: 0 0 30px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 </style>
