@@ -8,11 +8,13 @@
       <div class="chart">
         <dashborad-chart/>
       </div>
-      <div class="message"></div>
+      <div class="message">
+        <dashboard-message :messages="version"></dashboard-message>
+      </div>
     </div>
 
     <div class="dashboard-copyright">
-      <span>Version: 1.2.1</span>
+      <span>Version: {{version[0].version}}</span>
       <span>
         Copyleft © 2020-{{year}} Fengtianhe. All rights reserved.
       <a href="https://github.com/Fengtianhe/fth-rbac" target="_blank">https://github.com/Fengtianhe/fth-rbac</a>
@@ -26,13 +28,16 @@
 
 import DashboardTopCard from '@web/views/dashboard/components/DashboardTopCard';
 import DashboradChart from '@web/views/dashboard/components/DashboradChart';
+import DashboardMessage from '@web/views/dashboard/components/DashboardMessage';
+import version from '@/common/assets/data/version';
 
 export default {
   name: 'DashboardAdmin',
-  components: { DashboradChart, DashboardTopCard },
+  components: { DashboardMessage, DashboradChart, DashboardTopCard },
   data() {
     return {
-      year: new Date().getFullYear()
+      year: new Date().getFullYear(),
+      version
     };
   },
   created() {
@@ -52,6 +57,7 @@ export default {
       flex: 1;
       display: flex;
       margin-top: 30px;
+      padding: 0 20px;
 
       .chart {
         flex: 1;
@@ -62,6 +68,7 @@ export default {
       .message {
         flex: 0 0 400px;
         height: 100%;
+        padding: 0 0 20px 0;
       }
     }
 

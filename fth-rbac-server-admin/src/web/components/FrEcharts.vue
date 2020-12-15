@@ -10,7 +10,7 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
 // import 'echarts-wordcloud';
-import 'echarts/theme/macarons.js';
+// import 'echarts/theme/macarons.js';
 import 'echarts/lib/component/title';
 // echarts.registerMap('china', chinaJson);
 export default {
