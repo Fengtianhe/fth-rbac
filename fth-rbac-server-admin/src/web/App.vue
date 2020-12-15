@@ -34,7 +34,7 @@ export default {
       this.$router.push({ path: '/login' });
     } else {
       UserService.info();
-      this.$store.commit('SET_MENUS')
+      this.$store.commit('SET_MENUS');
     }
     localStorage.removeItem('store');
   }
