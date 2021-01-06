@@ -6,7 +6,9 @@ import com.fth.rbac.server.controller.vo.ResourceSaveReq;
 import com.fth.rbac.server.controller.vo.ResourceUpdateReq;
 import com.fth.rbac.server.core.entity.FrResource;
 import com.fth.rbac.server.sdk.vo.MenuTreeResp;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -80,6 +82,7 @@ public interface ResourceService {
 
     /**
      * 通过角色获取目录
+     *
      * @param roleIds
      * @return
      */
@@ -87,9 +90,24 @@ public interface ResourceService {
 
     /**
      * 获取按钮资源
+     *
      * @param pageUrl
      * @param asList
      * @return
      */
     List<FrResource> getBtnsByRoleId(String pageUrl, List<String> asList);
+
+    /**
+     * 导出json文件
+     *
+     * @param response
+     */
+    void exportJson(HttpServletResponse response);
+
+    /**
+     * 导入json配置
+     *
+     * @param file
+     */
+    void importJson(String appId, MultipartFile file) throws NoSuchFieldException, IllegalAccessException;
 }

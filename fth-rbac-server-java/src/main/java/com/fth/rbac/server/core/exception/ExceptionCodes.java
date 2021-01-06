@@ -23,6 +23,8 @@ public interface ExceptionCodes {
     ExceptionCode RESOURCE_SORT_NOT_CHANGE = new ExceptionCode(702, "资源未知未移动");
     ExceptionCode RESOURCE_UNKNOWN = new ExceptionCode(703, "无法找到资源");
     ExceptionCode RESOURCE_PAGE_AUTH_FAILURE = new ExceptionCode(704, "无该页面访问权限：{}");
+    ExceptionCode RESOURCE_EXPORT_FAILURE = new ExceptionCode(705, "资源配置导出失败");
+    ExceptionCode RESOURCE_IMPORT_UNKNOW_FILE = new ExceptionCode(706, "资源配置导入异常：未知文件");
     /**
      * 角色相关错误
      */

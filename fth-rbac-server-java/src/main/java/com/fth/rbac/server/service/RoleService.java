@@ -69,4 +69,17 @@ public interface RoleService {
      * @return
      */
     List<String> selectResourceIdsByRoleIds(List<String> roleIds);
+
+    /**
+     * 删除角色的资源配置
+     * @param roleId
+     */
+    void deleteAssignByRoleId(String roleId);
+
+    /**
+     * 获取应用的最大权限ID
+     * @param appId
+     * @return
+     */
+    String getAdminId(String appId);
 }

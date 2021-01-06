@@ -1,17 +1,23 @@
 package com.fth.rbac.server.controller;
 
+import com.fth.rbac.server.aop.PassToken;
 import com.fth.rbac.server.controller.vo.*;
 import com.fth.rbac.server.core.entity.FrResource;
+import com.fth.rbac.server.core.exception.CommonException;
+import com.fth.rbac.server.core.exception.ExceptionCode;
 import com.fth.rbac.server.core.utils.SecurityHelper;
 import com.fth.rbac.server.core.utils.common.BaseController;
 import com.fth.rbac.server.core.utils.common.CommonResponse;
+import com.fth.rbac.server.core.utils.common.ResponseConstant;
 import com.fth.rbac.server.service.ResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -84,6 +90,25 @@ public class ResourceController extends BaseController {
     @DeleteMapping("")
     public CommonResponse<Boolean> deleteResource(@RequestParam String resourceId) {
         resourceService.deleteById(resourceId);
+        return CommonResponse.withSuccessResp(true);
+    }
+
+    @ApiOperation("导出资源文件")
+    @GetMapping("export-json")
+    @PassToken
+    public void exportJson(HttpServletResponse response) {
+        resourceService.exportJson(response);
+    }
+
+    @ApiOperation("导入资源配置")
+    @PostMapping("import-json")
+    public CommonResponse<Boolean> importJson(String appId, MultipartFile file) {
+        try {
+            resourceService.importJson(appId, file);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            throw new CommonException(new ExceptionCode(ResponseConstant.RESP_ERROR_CODE, "导入资源配置失败，请联系技术人员"));
+        }
         return CommonResponse.withSuccessResp(true);
     }
 }

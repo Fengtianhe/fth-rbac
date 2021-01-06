@@ -1,5 +1,6 @@
 package com.fth.rbac.server.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.fth.rbac.server.controller.vo.ResourceTreeReq;
 import com.fth.rbac.server.controller.vo.ResourceTreeResp;
 import com.fth.rbac.server.controller.vo.ResourceSaveReq;
@@ -13,6 +14,8 @@ import com.fth.rbac.server.core.exception.CommonException;
 import com.fth.rbac.server.core.exception.ExceptionCodes;
 import com.fth.rbac.server.core.mapper.FrResourceMapper;
 import com.fth.rbac.server.core.mapper.ext.FrResourceMapperExt;
+import com.fth.rbac.server.core.utils.CommonFileHelper;
+import com.fth.rbac.server.core.utils.TreeHelper;
 import com.fth.rbac.server.sdk.vo.MenuTreeResp;
 import com.fth.rbac.server.service.ResourceService;
 import com.fth.rbac.server.service.RoleService;
@@ -21,9 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.relation.RoleResult;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.Menu;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -197,6 +206,68 @@ public class ResourceServiceImpl implements ResourceService {
 
         List<FrResource> btnResource = this.selectBtnByResourceId(frResources.get(0).getId());
         return btnResource;
+    }
+
+    @Override
+    public void exportJson(HttpServletResponse response) {
+        List<FrResource> list = appResourceMapper.selectByExample(new FrResourceExample());
+        List<ResourceTreeResp> resultList = this.covertToTree(list);
+
+        String filepath = CommonFileHelper.createJsonFile(JSON.toJSONString(resultList), "资源配置");
+        if (filepath == null) {
+            throw new CommonException(ExceptionCodes.RESOURCE_EXPORT_FAILURE);
+        }
+        CommonFileHelper.downloadByPath(filepath, response);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void importJson(String appId, MultipartFile file) throws NoSuchFieldException, IllegalAccessException {
+        if (file == null) {
+            throw new CommonException(ExceptionCodes.RESOURCE_IMPORT_UNKNOW_FILE);
+        }
+        StringBuilder sb = new StringBuilder();
+        InputStream inputStream = null;
+        try {
+            inputStream = file.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            sb = new StringBuilder();
+
+            String line = null;
+
+            while ((line = reader.readLine()) != null) {
+                // 去除空格，防止格式化有字段过长
+                sb.append(line.trim());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        List<ResourceTreeResp> resourceTree = JSON.parseArray(sb.toString(), ResourceTreeResp.class);
+        List<ResourceTreeResp> resources = TreeHelper.open(resourceTree, "children");
+
+        // 清除管理员权限
+        String adminRoleId = roleService.getAdminId(appId);
+        roleService.deleteAssignByRoleId(adminRoleId);
+        // 清除Application下的所有资源
+        FrResourceExample example = new FrResourceExample();
+        example.createCriteria().andAppIdEqualTo(appId);
+        appResourceMapper.deleteByExample(example);
+
+        resources.forEach(res -> {
+            // 插入资源数据
+            appResourceMapper.insertSelective(res);
+            // 插入管理员所有资源权限
+            roleService.assignDefaultResource(appId, res.getId());
+        });
     }
 
     private List<FrResource> getByResourceIds(List<String> resourceIds) {

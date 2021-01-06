@@ -76,4 +76,34 @@ public class TreeHelper {
         }
         return res;
     }
+
+    public static <T> List<T> open(List<T> lists, String childrenKey) throws NoSuchFieldException, IllegalAccessException {
+        if (CollectionUtils.isEmpty(lists)) {
+            return new ArrayList<>();
+        }
+
+        List<T> openList = new ArrayList<>();
+        for (T list : lists) {
+            openList.addAll(open(list, childrenKey));
+        }
+        return openList;
+    }
+
+    private static <T> List<T> open(T parent, String childrenKey) throws NoSuchFieldException, IllegalAccessException {
+        // 获得字段，使得字段可操作
+        Class clazz = parent.getClass();
+        Field childListField = clazz.getDeclaredField(childrenKey);
+        childListField.setAccessible(true);
+
+        List<T> openList = new ArrayList<>();
+        List<T> children = (List<T>) childListField.get(parent);
+        childListField.set(parent, null);
+        openList.add(parent);
+        if (CollectionUtils.isNotEmpty(children)) {
+            for (T child : children) {
+                openList.addAll(open(child, childrenKey));
+            }
+        }
+        return openList;
+    }
 }

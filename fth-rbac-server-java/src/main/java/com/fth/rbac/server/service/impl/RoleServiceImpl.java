@@ -107,6 +107,13 @@ public class RoleServiceImpl implements RoleService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteAssignByRoleId(String roleId) {
+        FrRoleResourceExample example = new FrRoleResourceExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        roleResourceMapper.deleteByExample(example);
+    }
+
     private void updateAssignRole(RoleAssignReq request) {
 //        this.checkAdminRole(request.getAppId(), request.getRoleId());
 
@@ -130,12 +137,6 @@ public class RoleServiceImpl implements RoleService {
         if (roleId.equals(this.getAdminId(appId))) {
             throw new CommonException(ExceptionCodes.ROLE_SUPER_CANNOT_UPT);
         }
-    }
-
-    private void deleteAssignByRoleId(String roleId) {
-        FrRoleResourceExample example = new FrRoleResourceExample();
-        example.createCriteria().andRoleIdEqualTo(roleId);
-        roleResourceMapper.deleteByExample(example);
     }
 
     private void createAssignRole(RoleAssignReq request, Integer userId) {
@@ -190,6 +191,7 @@ public class RoleServiceImpl implements RoleService {
         roleResourceMapper.deleteByExample(example);
     }
 
+    @Override
     public String getAdminId(String appId) {
         return appId + "_ADMIN";
     }
