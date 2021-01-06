@@ -104,6 +104,7 @@ export default {
         { label: '应用ID', prop: 'appId' },
         { label: '应用名称', prop: 'appName' },
         { label: '状态', prop: 'status', formatter: this.matchAppStatus },
+        { label: '客户端域', prop: 'domain', render: this.renderDomain },
         { label: '负责人', prop: 'developers', formatter: this.formatDevelopers },
         { label: '创建人', prop: 'creatorName' },
         { label: '创建时间', prop: 'createdAt', align: 'center', width: '130px', formatter: tableFormatDate }
@@ -173,6 +174,9 @@ export default {
         devnames.push(dev.nickname || dev.username);
       }
       return devnames.join(',');
+    },
+    renderDomain(scope) {
+return `<div style></div>`
     }
   }
 };
