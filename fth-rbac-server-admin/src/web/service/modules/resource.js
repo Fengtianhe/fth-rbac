@@ -58,5 +58,13 @@ export default {
    * @param inMenu
    * @returns {Promise<AxiosResponse<T>>}
    */
-  updateInMenu: (resourceId, inMenu) => service.put(`/api/resource/inmenu`, { resourceId, inMenu })
+  updateInMenu: (resourceId, inMenu) => service.put(`/api/resource/inmenu`, { resourceId, inMenu }),
+
+  /**
+   * 导入json配置
+   * @param appId
+   * @param file
+   * @returns {Promise<AxiosResponse<T>>}
+   */
+  importJson: formData => service.post('/api/resource/import-json', formData)
 };

@@ -19,7 +19,11 @@ export default {
   name: 'DashboardTopCard',
   data() {
     return {
-      cards: []
+      cards: [
+        { title: '应用数', icon: 'iconfont friconall', color: '#d94f42', num: '-' },
+        { title: '资源数', icon: 'iconfont friconclick', color: '#26c281', num: '-' },
+        { title: '角色数', icon: 'iconfont friconzhanghucaozuo', color: '#58889c', num: '-' }
+      ]
     };
   },
   created() {

@@ -27,6 +27,18 @@
                 :disabled="!filterForm.appId"
         >恢复资源默认排序
         </el-button>
+        <el-button
+                type="warning"
+                @click="importFn"
+                :disabled="!filterForm.appId"
+        >导入资源配置
+        </el-button>
+        <el-button
+                type="warning"
+                @click="exportFn"
+                :disabled="!filterForm.appId"
+        >导出资源配置
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -124,11 +136,11 @@
           >启用
           </el-button>
           <el-button
-              slot="reference"
-              type="danger"
-              size="mini"
-              plain
-              @click="delFn(scope.row.id)"
+                  slot="reference"
+                  type="danger"
+                  size="mini"
+                  plain
+                  @click="delFn(scope.row.id)"
           >删除
           </el-button>
         </template>
@@ -141,8 +153,9 @@
 <script>
 import { ResourceService } from '@web/service';
 import StringHelper from '@common/utils/StringHelper';
-import { ResourceMapping, MappingTools } from '@common/mapping';
+import { MappingTools, ResourceMapping } from '@common/mapping';
 import FrSelectApplication from '@web/components/FrSelectApplication';
+import { Loading } from 'element-ui';
 
 export default {
   name: 'AppResourceLists',
@@ -194,7 +207,7 @@ export default {
       }
     },
     async delFn(id) {
-      const confirm = await this.$confirm("确定删除资源？此操作不可逆。")
+      const confirm = await this.$confirm('确定删除资源？此操作不可逆。');
       if (confirm === 'confirm') {
         const res = await ResourceService.delete(id);
         if (res.code === 200) {
@@ -314,7 +327,38 @@ export default {
       this.searchAll(this.resources, keywords);
       this.resourcesFiltered = this.searchResource;
     },
+    importFn() {
+      let file = document.createElement('input');
+      file.setAttribute('type', 'file');
+      file.setAttribute('capture', 'camera');
+      file.setAttribute('accept', 'application/json');
+      file.style.display = 'none';
+      document.querySelector('body').appendChild(file);
+      file.addEventListener('change', async e => {
+        let loadingInstance1 = Loading.service({ fullscreen: true });
+        let file = e.target.files[0];
+        const formData = new FormData();
+        formData.set('file', file);
+        formData.set('appId', this.filterForm.appId);
+        const res = await ResourceService.importJson(formData);
+        if (res.code === 200) {
+          this.$notify.success('导入成功');
+          this.getAllResource();
+        }
+        loadingInstance1.close();
+      });
+      file.addEventListener('click', () => {
+        console.log('click');
+      });
+      file.click();
 
+    },
+    exportFn() {
+      const ele = document.createElement('a');
+      ele.target = '_blank';
+      ele.href = '/api/resource/export-json';
+      ele.click();
+    }
   }
 };
 </script>
